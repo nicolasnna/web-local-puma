@@ -54,7 +54,6 @@ const useRos = () => {
 
   const subscribe = (topic, messageType, callback) => {
     if (subscribers.find(t => t.name === topic)) {
-      console.log("encontradp")
       const actualSubscribe = subscribers.filter(t => t.name === topic)[0]
       actualSubscribe.unsubscribe();
     }
@@ -70,9 +69,9 @@ const useRos = () => {
   }
 
   const unsubscribe = (topic) => {
-    if (this.subscribers[topic]) {
-      this.subscribers[topic].unsubscribe();
-      delete this.subscribers[topic];
+    if (subscribers.find(t => t.name === topic)) {
+      const actualSubscribe = subscribers.filter(t => t.name === topic)[0]
+      actualSubscribe.unsubscribe();
     }
   }
 
@@ -81,7 +80,8 @@ const useRos = () => {
     subscribers,
     openConnection,
     closeConnection,
-    subscribe
+    subscribe,
+    unsubscribe
   }
 }
 
