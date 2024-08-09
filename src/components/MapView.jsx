@@ -30,7 +30,7 @@ const MapView = ({ rosInstance }) => {
     <MapContainer 
       center={position} 
       zoom={25} 
-      style={{ height: '400px', width: '500px' }}
+      style={{width:'35vw', height:'40vh'}}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

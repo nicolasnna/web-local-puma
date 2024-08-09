@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import { FontSize } from "../utils/constants"
 
 const CameraView = ({rosInstance}) => {
   const [image, setImage] = useState('')
@@ -18,11 +17,13 @@ const CameraView = ({rosInstance}) => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems={"center"} justifyContent="center" gap={2}>
+    <Box display="flex" flexDirection="column" alignItems={"center"} justifyContent="center" width="100%" height="100%" padding={0}>
       {image ? (
-        <img src={image} alt="Camera View" style={{ width: '600px', height: '480px' }} />
-      ) : <Box display={"flex"} alignItems="center" justifyContent="center" sx={{width: '600px', height: '480px'}}>
-        <Typography fontSize={FontSize.HIGH}>Cámara sin conexión</Typography>
+        <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center" padding={0}>
+          <img src={image} alt="Camera View" style={{ maxWidth: "100%" ,height: 'auto', maxHeight: '100%' }}/>
+        </Box>
+      ) : <Box display={"flex"} alignItems="center" justifyContent="center" sx={{width: '100%', height: '100%'}}>
+        <Typography fontSize={'1.5em'}>Cámara sin conexión</Typography>
         </Box>}
     </Box>
   )

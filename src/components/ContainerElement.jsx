@@ -1,15 +1,26 @@
-import { Box, Paper, Stack, Typography } from "@mui/material"
-import { FontSize, PaddingSize } from "../utils/constants"
+import { Box, Stack, Typography } from "@mui/material"
+import '../styles/components/_ContainerElement.sass'
 
 const ContainerElement = ({children, Title, Topic}) => {
   return (
-    <Box component={Paper} width="max-content" height="max-content">
-      <Stack flexDirection={"row"} alignItems="center" justifyContent={"center"} gap={2} padding={PaddingSize.SMALL}>
-        <Typography fontSize={FontSize.HIGH}>{Title}</Typography>
-        <Typography>{Topic}</Typography>
+    <Stack 
+      flexDirection="column" 
+      width="max-content"
+      height="max-content"
+      className="container-element"
+    >
+      <Stack  className="container-element__header">
+        <div className="container-element__header__title">
+          <Typography variant='h3'>{Title}</Typography>
+        </div>
+        <div className="container-element__header__subtitle">
+          <Typography variant="body1">{Topic}</Typography>
+        </div>
       </Stack>
-      {children}
-    </Box>
+      <Box className="container-element__content">
+        {children}
+      </Box>
+    </Stack>
   )
 }
 

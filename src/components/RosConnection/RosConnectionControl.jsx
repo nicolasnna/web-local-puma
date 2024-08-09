@@ -1,8 +1,7 @@
 import { Box, Button, Stack, Paper, TextField, Typography } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux";
-import useField from "../hooks/useField"
-import { setRosUrl } from "../reducer/rosReducer";
-import { FontSize, PaddingSize } from "../utils/constants"
+import useField from "../../hooks/useField"
+import { setRosUrl } from "../../reducer/rosReducer";
 import RosConnectionStatus from "./RosConnectionStatus";
 import { useState } from "react";
 
@@ -28,18 +27,20 @@ const RosConnectionControl = ({rosInstance}) => {
     <Box component={Paper} 
       display="flex" 
       flexDirection="column" 
-      width='max-content' 
-      padding={PaddingSize.NORMAL} 
       alignItems="center" 
       justifyContent="center"
+      width="25vw"
+      height="100%"
     >
-      <Typography fontSize={FontSize.BIG} variant="h2">Conectar con ROS</Typography>
+      <Stack>
+        <Typography variant="h2">Conectar con ROS</Typography>
+      </Stack>
       <Stack
         flexDirection="row"
         gap={1}
+        width="100%"
+        height="100%"
         onSubmit={handleConnectionRos}
-        alignItems="center"
-        justifyContent={"center"}
       >
         <TextField
           label="url ROS"
@@ -53,7 +54,7 @@ const RosConnectionControl = ({rosInstance}) => {
           variant="contained"
           onClick={handleConnectionRos}
         >
-          <Typography padding={0.5} fontSize={FontSize.NORMAL}>
+          <Typography padding={0.5} variant="body1">
             <strong>{labelButton}</strong>
           </Typography>
         </Button>
