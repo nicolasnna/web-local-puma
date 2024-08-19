@@ -43,7 +43,7 @@ const useRos = () => {
 
   const sendMessage = (topic, messageType, message) => {
     const rosTopic = new ROSLIB.Topic({
-      ros: this.ros,
+      ros: ros,
       name: topic,
       messageType: messageType
     });
@@ -81,7 +81,8 @@ const useRos = () => {
     openConnection,
     closeConnection,
     subscribe,
-    unsubscribe
+    unsubscribe,
+    sendMessage
   }
 }
 

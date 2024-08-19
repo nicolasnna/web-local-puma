@@ -1,0 +1,51 @@
+@import '../base/index'
+
+.connection-robot-status
+  display: flex
+  flex-direction: column
+  align-items: center
+  align-content: center
+  background-color: $color-background-items
+  padding: 1em 1.5em
+  border-radius: $border-radius-primary
+  width: 21vw
+  height: max-content
+  box-sizing: border-box
+  box-shadow: $box-shadow-primary
+
+  &__title
+    font-size: $size-title-item !important
+    text-align: center
+    margin-bottom: 0.2em !important
+
+  &__item
+    display: flex
+    flex-direction: row
+    justify-content: start
+    align-items: center
+    box-sizing: border-box
+    width: 18vw
+    height: 100%
+    gap: 1em
+    padding: 0 1em 
+    margin: 0.2em 0.2em
+    
+    &__text
+      font-size: 1.2em !important
+      margin-left: 0.8em !important
+
+    &__button
+      background-image: linear-gradient(to right, #7474BF 0%, #348AC7  51%, #7474BF  100%)
+      background-size: 200% auto
+      color: black !important
+      text-transform: none !important
+      width: 5vw
+      margin-left: auto !important
+      font-size: 0.9em !important
+      transition: 0.5s !important
+      box-shadow: $box-shadow-primary
+
+      &:hover
+        background-position: right center
+        color: #fff
+        text-decoration: none

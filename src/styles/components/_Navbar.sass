@@ -1,0 +1,33 @@
+@import '../base/index'
+
+.navbar
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: center
+  background-color: #c0c7e3
+  box-shadow: $box-shadow-primary
+  position: fixed
+  width: 100%
+  z-index: 5
+  gap: 3em
+  
+  &__link
+    text-decoration: none
+    color: $color-text-primary
+
+    &:visited
+      color: $color-text-primary
+
+    &__content
+      padding: 0.5em 1em  
+      display: flex
+      align-items: center
+      justify-content: center
+      cursor: pointer
+      font-size: 1.5em
+
+      &:hover
+        background-color: $color-items2-opacity
+        border-bottom: 4px solid #5792de
+        padding-bottom: calc(0.5em - 4px)

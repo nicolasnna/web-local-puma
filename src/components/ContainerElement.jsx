@@ -1,12 +1,9 @@
 import { Box, Stack, Typography } from "@mui/material"
-import '../styles/components/_ContainerElement.sass'
+import PropTypes from 'prop-types'
 
 const ContainerElement = ({children, Title, Topic}) => {
   return (
-    <Stack 
-      flexDirection="column" 
-      width="max-content"
-      height="max-content"
+    <Box 
       className="container-element"
     >
       <Stack  className="container-element__header">
@@ -20,8 +17,14 @@ const ContainerElement = ({children, Title, Topic}) => {
       <Box className="container-element__content">
         {children}
       </Box>
-    </Stack>
+    </Box>
   )
+}
+
+ContainerElement.propTypes= {
+  children: PropTypes.element,
+  Title: PropTypes.string,
+  Topic: PropTypes.string
 }
 
 export default ContainerElement

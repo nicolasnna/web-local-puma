@@ -1,17 +1,29 @@
+@import '../base/index'
+
 .container-element
-  border: 1px red solid
-  
+  display: flex
+  flex-direction: column
+  padding: 0.8em 1.2em
+  padding-bottom: 1.5em
+  border-radius: $border-radius-primary
+  background-color: $color-background-items
+  align-items: center
+  justify-content: center
+  width: max-content
+  height: max-content
+  box-shadow: $box-shadow-primary
+
   &__header
     display: flex
     flex-direction: row
-    height: 100%
-    max-height: 5vh
+    height: max-content
     width: max-content
     align-items: center
     justify-content: center
 
     &__title
       text-align: center
+      font-size: $size-title-item
 
     &__subtitle
       text-align: center

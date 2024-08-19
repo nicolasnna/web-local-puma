@@ -1,0 +1,54 @@
+@import '../../../base/index'
+
+.teleop-twist
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  background-color: $color-background-items
+  border-radius: $border-radius-primary
+  padding: 1.2em 2em
+  box-shadow: $box-shadow-primary
+  gap: 0.8em
+
+  &__title
+    font-size: $size-title-item !important
+
+  &__status
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+
+.teleop-twist-buttons-grid
+  display: grid
+  grid-template-areas: "up up up" "left reset right" "down down down"
+  grid-template-columns: 1fr auto 1fr
+  grid-template-rows: auto
+  align-items: center
+  justify-items: center
+  gap: 10px
+
+  &--up
+    grid-area: up
+  
+  &--down
+    grid-area: down
+
+  &--left
+    grid-area: left
+  
+  &--right
+    grid-area: right
+  
+  &--reset
+    grid-area: reset
+
+.teleop-icons
+  width: 2em !important
+  height: auto !important
+  color: $color-text-primary
+  transition: 0.5s
+  &:active
+    color: green
+    
