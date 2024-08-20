@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const navbarOptions = [
   { name: "Dashboard", route: "/"},
   { name: "Modo manual", route: "/manual"},
-  { name: "Modo autónomo", route: "/autonome"}
+  { name: "Modo autónomo", route: "/autonomous"}
 ]
 
 const Navbar = () => {

@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       <Navbar/>
-      <div style={{padding:'1em 2em', marginTop:'4.5em'}} >
+      <div style={{padding:'1em 2em'}} >
         <Routes>
           <Route path="/" element={<Dashboard rosInstance={rosManager}/>}/>
           <Route path="/manual" element={<Manual rosInstance={rosManager}/>}/>

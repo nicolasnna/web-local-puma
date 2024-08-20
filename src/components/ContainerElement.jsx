@@ -18,7 +18,7 @@ const ContainerElement = ({children, Title, Topic , currentDate}) => {
         {children}
       </Box>
       {currentDate && <div className="container-element__time">
-        <Typography>Ultima actualización: {currentDate}</Typography>
+        <Typography>Última actualización: {currentDate}</Typography>
       </div>}
     </Box>
   )

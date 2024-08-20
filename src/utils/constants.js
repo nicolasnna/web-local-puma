@@ -7,6 +7,7 @@ export const ACCELERATOR_TOPIC = '/puma/accelerator/command'
 export const DIRECTION_TOPIC = '/puma/direction/command'
 export const REVERSE_TOPIC = '/puma/reverse/command'
 export const BRAKE_TOPIC = '/puma/brake/command'
+export const MODE_SELECTOR_TOPIC = '/puma/mode_selector'
 
 export const LIMIT_ANGLE = 30
 export const LIMIT_ACCEL = 50

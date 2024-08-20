@@ -1,4 +1,4 @@
-@import '../base/index'
+@import '@styles/base/index'
 
 .navbar
   display: flex
@@ -7,7 +7,7 @@
   justify-content: center
   background-color: #c0c7e3
   box-shadow: $box-shadow-primary
-  position: fixed
+  position: sticky
   width: 100%
   z-index: 5
   gap: 3em
@@ -20,7 +20,7 @@
       color: $color-text-primary
 
     &__content
-      padding: 0.5em 1em  
+      padding: 0.7em 1em  
       display: flex
       align-items: center
       justify-content: center
@@ -29,5 +29,5 @@
 
       &:hover
         background-color: $color-items2-opacity
-        border-bottom: 4px solid #5792de
-        padding-bottom: calc(0.5em - 4px)
+        border-bottom: 5px solid #5792de
+        padding-bottom: calc(0.7em - 5px)

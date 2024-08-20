@@ -15,7 +15,12 @@ const RecenterAutomatically = ({ lat, lng }) => {
   return null;
 };
 
-const MapView = ({ rosInstance, showPath = false }) => {
+const MapView = ({ 
+  rosInstance, 
+  showPath = false,
+  widthMap = '35vw',
+  heightMap = '40vh'
+}) => {
   const [position, setPosition] = useState([0,0])
   const [path, setPath] = useState([])
   const rosIsConnected = useSelector(state => state.ros.isConnected)
@@ -47,8 +52,8 @@ const MapView = ({ rosInstance, showPath = false }) => {
       <MapContainer 
         center={position} 
         zoom={25} 
-        style={{width:'35vw', height:'40vh'}}
-      >
+        style={{width: widthMap, height:heightMap}}
+      > 
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -73,7 +78,9 @@ const MapView = ({ rosInstance, showPath = false }) => {
 
 MapView.propTypes = {
   rosInstance: PropTypes.object,
-  showPath: PropTypes.bool
+  showPath: PropTypes.bool,
+  widthMap: PropTypes.string,
+  heightMap: PropTypes.string
 }
 
 export default MapView

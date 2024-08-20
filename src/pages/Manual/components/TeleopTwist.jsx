@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Box, IconButton, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
@@ -7,6 +7,7 @@ import ArrowDownwardIcon  from '@mui/icons-material/ArrowDownward'
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import TurnRightIcon from '@mui/icons-material/TurnRight';
 import TurnLeftIcon from '@mui/icons-material/TurnLeft';
+import useCurrentTime from '@hooks/useCurrentTime'
 import { ACCELERATOR_TOPIC, DEG2RAD, DIRECTION_TOPIC, INITIAL_ACCEL, LIMIT_ACCEL, LIMIT_ANGLE, ODOM_TOPIC, REVERSE_TOPIC } from '@utils/constants'
 
 const TeleopTwist = ({rosInstance}) => {
@@ -17,6 +18,8 @@ const TeleopTwist = ({rosInstance}) => {
   const [reverse, setReverse] = useState(false)  
   const incrementValues = 5
   const incrementAccelValues = 3
+  const modeSelector = useSelector(state => state.ros.modeSelector)
+  const currentTime = useCurrentTime()
 
   useEffect(() => {
     if(rosIsAlive) {
@@ -28,6 +31,7 @@ const TeleopTwist = ({rosInstance}) => {
     const newVel = Math.round(message.twist.twist.linear.x*100)/100
     const changeVel = Math.abs(velX-newVel)>0.1 ? newVel : velX
     setVelX(changeVel)
+    currentTime.getCurrentTime()
   } 
 
   const changeAccel = (newValue) => {
@@ -59,7 +63,6 @@ const TeleopTwist = ({rosInstance}) => {
       changeAccel(newValue)
     } else {
       const newValue = accelValue>INITIAL_ACCEL ? accelValue-incrementAccelValues : accelValue
-      console.log(newValue)
       setAccelValue(newValue)
       setReverse(newValue>INITIAL_ACCEL)
       changeAccel(newValue)
@@ -112,21 +115,24 @@ const TeleopTwist = ({rosInstance}) => {
         </Typography>
       </Box>
       <Box className="teleop-twist-buttons-grid">
-        <IconButton onClick={incrementAccel}  className="teleop-twist-buttons-grid--up">
+        <IconButton disabled={modeSelector!=="manual"} onClick={incrementAccel}  className="teleop-twist-buttons-grid--up">
           <ArrowUpwardIcon className="teleop-icons"/>
         </IconButton>
-        <IconButton onClick={decrementAccel} className="teleop-twist-buttons-grid--down">
+        <IconButton disabled={modeSelector!=="manual"} onClick={decrementAccel} className="teleop-twist-buttons-grid--down">
           <ArrowDownwardIcon className="teleop-icons"/>
         </IconButton>
-        <IconButton onClick={resetValues} className="teleop-twist-buttons-grid--reset">
+        <IconButton disabled={modeSelector!=="manual"} onClick={resetValues} className="teleop-twist-buttons-grid--reset">
           <RestartAltIcon className="teleop-icons"/>
         </IconButton>
-        <IconButton onClick={incrementAngle} className="teleop-twist-buttons-grid--left">
+        <IconButton disabled={modeSelector!=="manual"} onClick={incrementAngle} className="teleop-twist-buttons-grid--left">
           <TurnLeftIcon className="teleop-icons"/>
         </IconButton>
-        <IconButton onClick={decrementAngle} className="teleop-twist-buttons-grid--right">
+        <IconButton disabled={modeSelector!=="manual"} onClick={decrementAngle} className="teleop-twist-buttons-grid--right">
           <TurnRightIcon className="teleop-icons"/>
         </IconButton>
+      </Box>
+      <Box>
+        <Typography>Última actualización: {currentTime.value}</Typography>
       </Box>
     </Box>
   )
