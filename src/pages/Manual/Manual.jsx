@@ -7,7 +7,7 @@ import CameraView from '@components/CameraView'
 import MapView from '@components/MapView'
 import { useDispatch, useSelector } from 'react-redux'
 import { setModeSelector } from '@reducer/rosReducer'
-import { MODE_SELECTOR_TOPIC } from '../../utils/constants'
+import { MODE_SELECTOR_TOPIC } from '@utils/constants'
 
 const Manual = ({rosInstance}) => {
   const modeSelector = useSelector(state => state.ros.modeSelector)
@@ -16,8 +16,8 @@ const Manual = ({rosInstance}) => {
   
   const handleSwitchMode = () => {
     const newMode = modeSelector !== "manual" ? "manual" : "none"
-    dispatch(setModeSelector(newMode))
     if (rosIsConnected) {
+      dispatch(setModeSelector(newMode))
       rosInstance.sendMessage(
         MODE_SELECTOR_TOPIC,
         'std_msgs/String',
