@@ -1,13 +1,15 @@
 import { Box, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import ContainerElement from "../../../components/ContainerElement"
+import ContainerElement from "@components/ContainerElement"
 import PropTypes from 'prop-types'
-import { REALSENSE_TOPIC } from "../../../utils/constants"
+import { REALSENSE_TOPIC } from "@utils/constants"
+import useCurrentTime from "@hooks/useCurrentTime"
 
 const CameraView = ({rosInstance}) => {
   const [image, setImage] = useState('')
   const isConnected = useSelector(state => state.ros.isConnected)
+  const currentTime = useCurrentTime()
 
   useEffect(()=> {
     if (isConnected) {
@@ -17,12 +19,14 @@ const CameraView = ({rosInstance}) => {
 
   const callbackCamera = (message) => {
     setImage(`data:image/jpeg;base64,${message.data}`)
+    currentTime.getCurrentTime()
   }
 
   return (
     <ContainerElement
       Title={"Vista Realsense"}
       Topic={REALSENSE_TOPIC}
+      currentDate={currentTime.value}
     >
       <Box className="camera-view">
         {image ? 

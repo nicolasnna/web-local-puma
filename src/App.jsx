@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { Route, Routes } from "react-router-dom"
-import Navbar from "./components/Navbar"
-import useRos from "./hooks/useRos"
-import Dashboard from "./pages/Dashboard/Dashboard"
-import Manual from "./pages/Manual/Manual"
+import Navbar from "@components/Navbar"
+import useRos from "@hooks/useRos"
+import Dashboard from "@pages/Dashboard/Dashboard"
+import Manual from "@pages/Manual/Manual"
 
 function App() {
   const rosManager = useRos()

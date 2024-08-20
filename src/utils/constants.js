@@ -9,4 +9,6 @@ export const REVERSE_TOPIC = '/puma/reverse/command'
 export const BRAKE_TOPIC = '/puma/brake/command'
 
 export const LIMIT_ANGLE = 30
+export const LIMIT_ACCEL = 50
+export const INITIAL_ACCEL = 22
 export const DEG2RAD = 0.0174533

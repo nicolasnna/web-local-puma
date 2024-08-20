@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import ROSLIB from "roslib"
-import { setConnection } from "../reducer/rosReducer"
+import { setConnection } from "@reducer/rosReducer"
 
 const useRos = () => {
   const [ros, setRos] = useState(null)

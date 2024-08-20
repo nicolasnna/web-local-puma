@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Header from '../../components/Header'
+import Header from '@components/Header'
 import { Box } from '@mui/material'
-import ConnectionRobotStatus from '../../components/ConnectionRobot/ConnectionRobotStatus'
+import ConnectionRobotStatus from '@components/ConnectionRobot/ConnectionRobotStatus'
 import TeleopTwist from './components/TeleopTwist'
 import CameraView from '../Dashboard/components/CameraView'
+import MapView from '../Dashboard/components/MapView'
 
 const Manual = ({rosInstance}) => {
   return (
@@ -18,6 +19,9 @@ const Manual = ({rosInstance}) => {
       <Box className="grid-container-manual--teleop">
         <TeleopTwist rosInstance={rosInstance}/>
       </Box>
+      <Box className="grid-container-manual--map">
+        <MapView rosInstance={rosInstance} showPath={true} />
+      </Box>
       <Box className="grid-container-manual--camera">
         <CameraView rosInstance={rosInstance} />
       </Box>
@@ -25,6 +29,8 @@ const Manual = ({rosInstance}) => {
   )
 }
 
-Manual.propTypes = {}
+Manual.propTypes = {
+  rosInstance: PropTypes.object
+}
 
 export default Manual

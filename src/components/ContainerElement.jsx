@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material"
 import PropTypes from 'prop-types'
 
-const ContainerElement = ({children, Title, Topic}) => {
+const ContainerElement = ({children, Title, Topic , currentDate}) => {
   return (
     <Box 
       className="container-element"
@@ -17,6 +17,9 @@ const ContainerElement = ({children, Title, Topic}) => {
       <Box className="container-element__content">
         {children}
       </Box>
+      {currentDate && <div className="container-element__time">
+        <Typography>Ultima actualización: {currentDate}</Typography>
+      </div>}
     </Box>
   )
 }
@@ -24,7 +27,8 @@ const ContainerElement = ({children, Title, Topic}) => {
 ContainerElement.propTypes= {
   children: PropTypes.element,
   Title: PropTypes.string,
-  Topic: PropTypes.string
+  Topic: PropTypes.string,
+  currentDate: PropTypes.string
 }
 
 export default ContainerElement

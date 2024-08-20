@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { URL_ROS_DEFAULT } from '../utils/constants';
+import { URL_ROS_DEFAULT } from '@utils/constants';
 
 const initialState = {
   isConnected: false,
   rosUrl: URL_ROS_DEFAULT,
-  message: []
+  message: [],
+  modeSelector: "none"
 };
 
 const rosSlice = createSlice({
@@ -19,6 +20,9 @@ const rosSlice = createSlice({
     },
     setMessage(state, action) {
       state.message.push(action.payload)
+    },
+    setModeSelector(state, action) {
+      state.modeSelector = action.payload
     }
   },
 });
@@ -26,7 +30,8 @@ const rosSlice = createSlice({
 export const {
   setConnection,
   setRosUrl,
-  setMessage
+  setMessage,
+  setModeSelector
 } = rosSlice.actions;
 
 export default rosSlice.reducer;

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet"
 import 'leaflet/dist/leaflet.css';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
+import { MapContainer, Marker, Polyline, Popup, TileLayer, useMap } from "react-leaflet";
 import { useSelector } from "react-redux";
-import ContainerElement from "../../../components/ContainerElement";
-import { GPS_TOPIC } from "../../../utils/constants";
-import PropTypes from 'prop-types'
+import ContainerElement from "@components/ContainerElement";
+import useCurrentTime from "@hooks/useCurrentTime";
+import { GPS_TOPIC } from "@utils/constants";
 
 const RecenterAutomatically = ({ lat, lng }) => {
   const map = useMap();
@@ -14,9 +15,11 @@ const RecenterAutomatically = ({ lat, lng }) => {
   return null;
 };
 
-const MapView = ({ rosInstance }) => {
+const MapView = ({ rosInstance, showPath = false }) => {
   const [position, setPosition] = useState([0,0])
+  const [path, setPath] = useState([])
   const rosIsConnected = useSelector(state => state.ros.isConnected)
+  const currentTime = useCurrentTime()
 
   useEffect(() => {
     if (rosIsConnected) {
@@ -24,15 +27,22 @@ const MapView = ({ rosInstance }) => {
     }
   },[rosIsConnected])
 
+
   const handleGpsMessage = (message) => {
     const {latitude, longitude} = message
-    setPosition([latitude, longitude])
+    const newPosition = [latitude, longitude]
+    setPosition(newPosition)
+    if (showPath) {
+      setPath(prevPath => [...prevPath, newPosition])
+    }
+    currentTime.getCurrentTime()
   }
 
   return (
     <ContainerElement
       Title={"Posición global"}
       Topic={GPS_TOPIC}
+      currentDate={currentTime.value}
     >
       <MapContainer 
         center={position} 
@@ -50,6 +60,11 @@ const MapView = ({ rosInstance }) => {
             Robot position: {position[0]}, {position[1]}
           </Popup>
         </Marker>
+        {showPath && path.length>0 && <Polyline positions={path} color="blue">
+          <Popup>
+            Ruta seguida por el robot en esta sesión.
+          </Popup>
+        </Polyline>}
         <RecenterAutomatically lat={position[0]} lng={position[1]} />
       </MapContainer>
     </ContainerElement>
@@ -57,7 +72,8 @@ const MapView = ({ rosInstance }) => {
 }
 
 MapView.propTypes = {
-  rosInstance: PropTypes.object
+  rosInstance: PropTypes.object,
+  showPath: PropTypes.bool
 }
 
 export default MapView
