@@ -1,7 +1,7 @@
 .grid-container-autonomous
   display: grid
-  grid-template-areas: "connection header header" "map-manager map-manager map-manager"
-  grid-template-columns: auto auto auto
+  grid-template-areas: "connection header header header" "path-manager map-manager map-manager test"
+  grid-template-columns: repeat(4, 1fr)
   grid-template-rows: auto
   align-items: start
   justify-items: center
@@ -15,3 +15,6 @@
   
   &--map-manager
     grid-area: map-manager
+
+  &--path-manager
+    grid-area: path-manager

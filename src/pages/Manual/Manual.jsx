@@ -44,7 +44,7 @@ const Manual = ({rosInstance}) => {
         <MapView 
           rosInstance={rosInstance} 
           showPath={true}
-          widthMap={"45vw"}
+          widthMap={"40vw"}
           heightMap={"60vh"}
         />
       </Box>

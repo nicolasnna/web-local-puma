@@ -6,6 +6,7 @@ import { setModeSelector } from '@reducer/rosReducer'
 import { MODE_SELECTOR_TOPIC } from '@utils/constants'
 import ConnectionRobotStatus from '@components/ConnectionRobot/ConnectionRobotStatus'
 import MapAutonomous from './components/MapAutonomous'
+import ManagePathNav from './components/ManagePathNav'
 
 const Autonomous = ({rosInstance}) => {
   const modeSelector = useSelector(state => state.ros.modeSelector)
@@ -34,8 +35,11 @@ const Autonomous = ({rosInstance}) => {
       <Box className="grid-container-autonomous--connection">
         <ConnectionRobotStatus rosInstance={rosInstance}/>
       </Box>
+      <Box className="grid-container-autonomous--path-manager">
+        <ManagePathNav/>
+      </Box>
       <Box className="grid-container-autonomous--map-manager">
-        <MapAutonomous rosInstance={rosInstance}/>
+        <MapAutonomous rosInstance={rosInstance} widthMap='40vw' heightMap='50vh'/>
       </Box>
     </Box>
   )

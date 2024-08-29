@@ -1,0 +1,37 @@
+@import '@styles/base/index'
+  
+.button
+  &--primary
+    background-color: $primary !important
+    color: $text-secondary !important
+    text-transform: none !important
+    border: 2px solid $primary !important
+    font-size: 1em !important
+    
+    &:hover
+      background-color: rgba($primary, 0.5) !important
+      color: $text-primary !important
+      box-shadow: 1px 1px 5px 1px $primary
+
+    &--active
+      background-color: $background-items !important
+      border: 1px solid $primary
+      color: $primary !important
+      box-shadow: 1px 1px 5px 1px $primary
+
+    &:disabled
+      background-color: rgba($primary,0.4) !important
+      color: $text-primary !important
+      opacity: 0.5
+
+  &--secondary
+    background-color: $background-items !important
+    color:$text-primary !important
+    border: 2px solid $primary !important
+    text-transform: none !important
+    font-size: 1em !important
+    
+    &:hover
+      background-color: $secondary !important
+      border: 1px solid $primary
+      box-shadow: 1px 1px 5px 1px $primary

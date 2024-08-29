@@ -6,20 +6,22 @@ const ContainerElement = ({children, Title, Topic , currentDate}) => {
     <Box 
       className="container-element"
     >
-      <Stack  className="container-element__header">
-        <div className="container-element__header__title">
-          <Typography variant='h3'>{Title}</Typography>
-        </div>
-        <div className="container-element__header__subtitle">
-          <Typography variant="body1">{Topic}</Typography>
-        </div>
-      </Stack>
-      <Box className="container-element__content">
-        {children}
+      <Box >
+        <Stack  className="container-element__header">
+          <div className="container-element__header__title">
+            <Typography variant='h3'>{Title}</Typography>
+          </div>
+          <div className="container-element__header__subtitle">
+            <Typography variant="body1">{Topic}</Typography>
+          </div>
+        </Stack>
+        <Box className="container-element__content">
+          {children}
+        </Box>
+        {currentDate && <div className="container-element__time">
+          <Typography>Última actualización: {currentDate}</Typography>
+        </div>}
       </Box>
-      {currentDate && <div className="container-element__time">
-        <Typography>Última actualización: {currentDate}</Typography>
-      </div>}
     </Box>
   )
 }

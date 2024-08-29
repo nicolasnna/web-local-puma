@@ -5,6 +5,7 @@ import useRos from "@hooks/useRos"
 import Dashboard from "@pages/Dashboard/Dashboard"
 import Manual from "@pages/Manual/Manual"
 import Autonomous from "./pages/Autonomous/Autonomous"
+import Notification from "@components/Notification"
 
 function App() {
   const rosManager = useRos()
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <Navbar/>
+      <Notification/>
       <div style={{padding:'1em 2em'}} >
         <Routes>
           <Route path="/" element={<Dashboard rosInstance={rosManager}/>}/>
