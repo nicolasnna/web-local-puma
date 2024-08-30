@@ -30,7 +30,6 @@ function SelectorMarker({initialPosition}) {
       }
     }), [dispatch],
   ) 
-
   return (
     <Marker 
       draggable={true} 
@@ -38,6 +37,7 @@ function SelectorMarker({initialPosition}) {
       position={position} 
       ref={markerRef} 
       icon={customIcon}
+      zIndexOffset={4}
     >
       <Popup minWidth={90}>
         <Typography>

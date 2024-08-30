@@ -39,7 +39,13 @@ const TeleopTwist = ({rosInstance}) => {
       ACCELERATOR_TOPIC,
       'std_msgs/Int16',
       {data: newValue}
-    )}
+    )
+    rosInstance.sendMessage(
+      "/puma/brake/command",
+      'puma_brake_msgs/BrakeCmd',
+      {activate_brake: false}
+    )
+  }
   const changeDirection = (newValue) =>{
     rosInstance.sendMessage(
       DIRECTION_TOPIC,
@@ -53,6 +59,11 @@ const TeleopTwist = ({rosInstance}) => {
       REVERSE_TOPIC,
       'std_msgs/Bool',
       {data: newValue}
+    )
+    rosInstance.sendMessage(
+      "/puma/brake/command",
+      'puma_brake_msgs/BrakeCmd',
+      {activate_brake: true}
     )
   }
 

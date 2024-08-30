@@ -21,7 +21,7 @@ const ConnectionRobotStatusItem = ({
           {label}
         </Typography>
         {needButton &&
-          <Button className="connection-robot-status__item__button">
+          <Button className="connection-robot-status__item__button button--primary">
             <Typography>Reiniciar</Typography>
           </Button>
         }

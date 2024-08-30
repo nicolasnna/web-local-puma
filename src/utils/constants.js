@@ -9,6 +9,10 @@ export const REVERSE_TOPIC = "/puma/reverse/command"
 export const BRAKE_TOPIC = "/puma/brake/command"
 export const MODE_SELECTOR_TOPIC = "/puma/mode_selector"
 
+export const WAYPOINTS_SEND_TOPIC = "/puma/waypoints/planned_goal_gps"
+export const WAYPOINTS_START_TOPIC = "/puma/waypoints/plan_ready"
+export const WAYPOINTS_STOP_TOPIC = "/puma/waypoints/plan_stop"
+
 export const LIMIT_ANGLE = 30
 export const LIMIT_ACCEL = 50
 export const INITIAL_ACCEL = 22

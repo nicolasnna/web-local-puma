@@ -36,7 +36,7 @@ const Autonomous = ({rosInstance}) => {
         <ConnectionRobotStatus rosInstance={rosInstance}/>
       </Box>
       <Box className="grid-container-autonomous--path-manager">
-        <ManagePathNav/>
+        <ManagePathNav rosInstance={rosInstance} />
       </Box>
       <Box className="grid-container-autonomous--map-manager">
         <MapAutonomous rosInstance={rosInstance} widthMap='40vw' heightMap='50vh'/>
