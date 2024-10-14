@@ -2,6 +2,7 @@
   display: flex
   flex-direction: column
   gap: 0.8em
+  width: max-content
 
   &__buttons-option
     display: flex
@@ -25,7 +26,7 @@
         background-color: #506fb8
 
     &__head
-      font-size: 1.8em
+      font-size: 1.5rem
       background-color: #7090fab0 
 
       &--cell
@@ -33,7 +34,19 @@
         padding: 0.5em 1em !important
 
     &__body
-      font-size: 1.5em
+      font-size: 1.3rem
 
       &--cell
         padding: 0.7em 1.5em !important
+
+@media (max-width: 1280px)
+  .manage-path--container
+    max-width: 90vw
+
+@media (min-width: 768px) and (max-width: 1279px)
+  .manage-path--container
+    max-width: 40vw
+
+@media (min-width: 1280px)
+  .manage-path--container
+    max-width: 30vw

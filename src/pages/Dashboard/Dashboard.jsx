@@ -1,42 +1,56 @@
+import CameraView from "@components/CameraView"
 import ConnectionRobotStatus from "@components/ConnectionRobot/ConnectionRobotStatus"
 import Header from "@components/Header"
-import { Box } from "@mui/material"
-import PropTypes from 'prop-types'
-import CameraView from "@components/CameraView"
 import MapView from "@components/MapView"
+import useWindowSize from "@hooks/useWindowSize"
+import { Box, Stack } from "@mui/material"
+import PropTypes from "prop-types"
 import RosConsoleLogs from "./components/RosConsoleLogs"
-import RosParameters from "./components/RosParameters"
 
-const Dashboard = ({rosInstance}) => {
+const Dashboard = ({ rosInstance }) => {
+  const { width } = useWindowSize()
+
+  const getWidthMap = () => {
+    if (width < 768) {
+      return "80vw"
+    }
+    if (width < 1279) {
+      return "40vw"
+    }
+    return "30vw"
+  }
+
   return (
-    <>
-      <Box className="grid-container-dashboard">
-          <Box className="grid-container--sidecontent">
-            <ConnectionRobotStatus/>
-          </Box>
-          <Box className="grid-container-dashboard--header">
-            <Header Title={"Interfaz de monitoreo del Robot Puma"}>
-            </Header>
-          </Box>
-          <Box className="grid-container-dashboard--realsense">
-            <CameraView rosInstance={rosInstance}/>
-          </Box>
-          <Box className="grid-container-dashboard--consolelog">
-            <RosConsoleLogs rosInstance={rosInstance}/>
-          </Box>
-          <Box className="grid-container-dashboard--map">
-            <MapView rosInstance={rosInstance}/>
-          </Box>
-          <Box className="grid-container-dashboard--parameters">
-            <RosParameters rosInstance={rosInstance} />
-          </Box>
-        </Box>
-    </>
+    <Box className="dashboard">
+      <Stack
+        flexDirection="row"
+        justifyContent={"space-around"}
+        gap={4}
+        flexWrap={"wrap-reverse"}
+      >
+        <ConnectionRobotStatus extraClassName="grid-container-dashboard--robotstatus" />
+        <Header
+          Title="Interfaz de monitoreo PUMA"
+          extraClassName="grid-container-dashboard--header"
+        />
+      </Stack>
+      <Stack
+        flexDirection="row"
+        justifyContent={"space-around"}
+        gap={2}
+        flexWrap={"wrap"}
+        width={"100%"}
+      >
+        <CameraView rosInstance={rosInstance} />
+        <MapView widthMap={getWidthMap()} rosInstance={rosInstance} />
+        <RosConsoleLogs rosInstance={rosInstance} />
+      </Stack>
+    </Box>
   )
 }
 
 Dashboard.propTypes = {
-  rosInstance: PropTypes.object
+  rosInstance: PropTypes.object,
 }
 
 export default Dashboard
