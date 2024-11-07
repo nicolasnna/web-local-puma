@@ -25,6 +25,12 @@ const positionSlice = createSlice({
     setCurrent(state, action) {
       state.currentSelection = action.payload
     },
+    updatePosition(state, action) {
+      const { index, position } = action.payload
+      if (state.selectedPosition[index]) {
+        state.selectedPosition[index] = position
+      }
+    }
   },
 })
 
@@ -34,5 +40,8 @@ export const {
   addPosition,
   addLabel,
   setCurrent,
+  updatePosition
 } = positionSlice.actions
+
+
 export default positionSlice.reducer

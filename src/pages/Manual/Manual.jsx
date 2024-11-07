@@ -1,20 +1,18 @@
-import PropTypes from "prop-types"
-import Header from "@components/Header"
-import { Box, Stack, Switch } from "@mui/material"
-import ConnectionRobotStatus from "@components/ConnectionRobot/ConnectionRobotStatus"
-import TeleopTwist from "./components/TeleopTwist"
+import { useRosContext } from "@utils/RosContext"
 import CameraView from "@components/CameraView"
-import MapView from "@components/MapView"
-import { useDispatch, useSelector } from "react-redux"
-import { setModeSelector } from "@reducer/rosReducer"
-import { MODE_SELECTOR_TOPIC } from "@utils/constants"
+import Header from "@components/Header"
+import MapView from "@components/Map/MapView"
 import useWindowSize from "@hooks/useWindowSize"
+import { Box, Stack, Switch } from "@mui/material"
+import { MODE_SELECTOR_TOPIC } from "@utils/constants"
+import { useSelector } from "react-redux"
+import TeleopTwist from "./components/TeleopTwist"
 
-const Manual = ({ rosInstance }) => {
+const Manual = () => {
   const modeSelector = useSelector((state) => state.ros.modeSelector)
-  const dispatch = useDispatch()
   const rosIsConnected = useSelector((state) => state.ros.isConnected)
   const { width } = useWindowSize()
+  const rosInstance = useRosContext()
 
   const getWidthMap = () => {
     if (width < 768) {
@@ -29,7 +27,6 @@ const Manual = ({ rosInstance }) => {
   const handleSwitchMode = () => {
     const newMode = modeSelector !== "manual" ? "manual" : "none"
     if (rosIsConnected) {
-      dispatch(setModeSelector(newMode))
       rosInstance.sendMessage(MODE_SELECTOR_TOPIC, "std_msgs/String", {
         data: newMode,
       })
@@ -37,48 +34,23 @@ const Manual = ({ rosInstance }) => {
   }
 
   return (
-    <Box className="manual">
-      <Stack
-        gap={4}
-        flexDirection={"row"}
-        flexWrap={"wrap-reverse"}
-        justifyContent={"space-around"}
-      >
-        <ConnectionRobotStatus rosInstance={rosInstance} />
-        <Header Title={"Modo manual"}>
-          <Switch
-            checked={modeSelector === "manual"}
-            onChange={handleSwitchMode}
-            className="custom-switch"
-          />
-        </Header>
-      </Stack>
-      <Stack gap={4} flexDirection={"row"} flexWrap={"wrap"}>
-        <TeleopTwist rosInstance={rosInstance} />
-        <MapView
-          rosInstance={rosInstance}
-          showPath={true}
-          widthMap={getWidthMap()}
-          heightMap={"40vh"}
+    <Box className="manual" >
+      <Header Title={"Modo manual"}>
+        <Switch
+          checked={modeSelector === "manual"}
+          onChange={handleSwitchMode}
+          className="custom-switch"
         />
-        <CameraView rosInstance={rosInstance} />
+      </Header>
+      <Stack gap={4} flexDirection={"row"} flexWrap={"wrap"} padding={0}>
+        <TeleopTwist />
+        <MapView showPath={true} widthMap={getWidthMap()} heightMap={"40vh"} />
+        <CameraView />
       </Stack>
-      {/* <Box
-        className="grid-container-manual--teleop"
-        sx={{ opacity: modeSelector === "manual" ? 1 : 0.2 }}
-      >
-        
-      </Box>
-      <Box className="grid-container-manual--map">
-      </Box>
-      <Box className="grid-container-manual--camera">
-      </Box> */}
     </Box>
   )
 }
 
-Manual.propTypes = {
-  rosInstance: PropTypes.object,
-}
+Manual.propTypes = {}
 
 export default Manual

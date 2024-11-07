@@ -1,3 +1,5 @@
+@import '@styles/base/index'
+
 .map-autonomous
   &__options
     display: flex
@@ -5,3 +7,10 @@
     margin-bottom: 0.5em
     gap: 1em
     align-items: center
+
+.no-background-icon
+  background-color: transparent 
+  border: none
+  & > *
+    color: $text-primary
+    font-size: 1rem

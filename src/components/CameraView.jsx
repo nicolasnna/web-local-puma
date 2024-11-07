@@ -1,36 +1,18 @@
-import { Box, Typography } from "@mui/material"
-import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
 import ContainerElement from "@components/ContainerElement"
-import PropTypes from "prop-types"
+import { Box, Typography } from "@mui/material"
 import { REALSENSE_TOPIC } from "@utils/constants"
-import useCurrentTime from "@hooks/useCurrentTime"
+import PropTypes from "prop-types"
+import { useSelector } from "react-redux"
 
-const CameraView = ({ rosInstance, extraClassName }) => {
-  const [image, setImage] = useState("")
-  const isConnected = useSelector((state) => state.ros.isConnected)
-  const currentTime = useCurrentTime()
-
-  useEffect(() => {
-    if (isConnected) {
-      rosInstance.subscribe(
-        REALSENSE_TOPIC,
-        "sensor_msgs/CompressedImage",
-        callbackCamera
-      )
-    }
-  }, [isConnected])
-
-  const callbackCamera = (message) => {
-    setImage(`data:image/jpeg;base64,${message.data}`)
-    currentTime.getCurrentTime()
-  }
+const CameraView = ({ extraClassName }) => {
+  const currentTime = useSelector((state) => state.cameraRos.timeUploaded)
+  const image = useSelector((state) => state.cameraRos.image)
 
   return (
     <ContainerElement
       Title={"Vista Realsense"}
       Topic={REALSENSE_TOPIC}
-      currentDate={currentTime.value}
+      currentDate={currentTime}
       extraClassName={extraClassName}
     >
       <Box className="camera-view">
@@ -47,7 +29,6 @@ const CameraView = ({ rosInstance, extraClassName }) => {
 }
 
 CameraView.propTypes = {
-  rosInstance: PropTypes.object,
   extraClassName: PropTypes.string,
 }
 

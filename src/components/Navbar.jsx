@@ -9,7 +9,7 @@ const navbarOptions = [
 
 const Navbar = () => {
   return (
-    <div className='navbar'>
+    <nav className='navbar'>
       {navbarOptions.map( o => 
         <Link className='navbar__link' to={o.route} key={o.name}>
           <Box className='navbar__link__content'>
@@ -20,7 +20,7 @@ const Navbar = () => {
         </Link>
       )
       }
-    </div>
+    </nav>
   )
 }
 

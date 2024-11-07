@@ -1,13 +1,11 @@
 import CameraView from "@components/CameraView"
-import ConnectionRobotStatus from "@components/ConnectionRobot/ConnectionRobotStatus"
 import Header from "@components/Header"
-import MapView from "@components/MapView"
+import MapView from "@components/Map/MapView"
 import useWindowSize from "@hooks/useWindowSize"
 import { Box, Stack } from "@mui/material"
-import PropTypes from "prop-types"
 import RosConsoleLogs from "./components/RosConsoleLogs"
 
-const Dashboard = ({ rosInstance }) => {
+const Dashboard = () => {
   const { width } = useWindowSize()
 
   const getWidthMap = () => {
@@ -22,35 +20,26 @@ const Dashboard = ({ rosInstance }) => {
 
   return (
     <Box className="dashboard">
+      <Header
+        Title="Interfaz de monitoreo PUMA"
+        extraClassName="grid-container-dashboard--header"
+      />
       <Stack
         flexDirection="row"
         justifyContent={"space-around"}
-        gap={4}
-        flexWrap={"wrap-reverse"}
-      >
-        <ConnectionRobotStatus extraClassName="grid-container-dashboard--robotstatus" />
-        <Header
-          Title="Interfaz de monitoreo PUMA"
-          extraClassName="grid-container-dashboard--header"
-        />
-      </Stack>
-      <Stack
-        flexDirection="row"
-        justifyContent={"space-around"}
-        gap={2}
+        gap={3}
         flexWrap={"wrap"}
-        width={"100%"}
+        width={"max-content"}
+        padding={0}
       >
-        <CameraView rosInstance={rosInstance} />
-        <MapView widthMap={getWidthMap()} rosInstance={rosInstance} />
-        <RosConsoleLogs rosInstance={rosInstance} />
+        <CameraView />
+        <MapView widthMap={getWidthMap()} />
+        <RosConsoleLogs />
       </Stack>
     </Box>
   )
 }
 
-Dashboard.propTypes = {
-  rosInstance: PropTypes.object,
-}
+Dashboard.propTypes = {}
 
 export default Dashboard

@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import { Box, Button, Typography } from '@mui/material'
 
@@ -11,15 +10,16 @@ const ConnectionRobotStatusItem = ({
     <Box className="connection-robot-status__item">
         <div
           style={{
-            width: '20px',
-            height: '20px',
+            width: '30px',
+            height: '30px',
             borderRadius: '50%',
+            border: '1px solid black',
             backgroundColor: isConnected ? 'rgb(0,200,0,0.9)' : 'rgb(200,0,0,0.9)',
           }}
         />
-        <Typography className='connection-robot-status__item__text'>
+        {label!= "" && <Typography className='connection-robot-status__item__text'>
           {label}
-        </Typography>
+        </Typography>}
         {needButton &&
           <Button className="connection-robot-status__item__button button--primary">
             <Typography>Reiniciar</Typography>

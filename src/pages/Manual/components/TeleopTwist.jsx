@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react"
-import PropTypes from "prop-types"
-import { Box, IconButton, Typography } from "@mui/material"
-import { useSelector } from "react-redux"
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward"
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward"
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward"
 import RestartAltIcon from "@mui/icons-material/RestartAlt"
-import TurnRightIcon from "@mui/icons-material/TurnRight"
 import TurnLeftIcon from "@mui/icons-material/TurnLeft"
-import useCurrentTime from "@hooks/useCurrentTime"
+import TurnRightIcon from "@mui/icons-material/TurnRight"
+import { Box, IconButton, Typography } from "@mui/material"
 import {
   ACCELERATOR_TOPIC,
   DEG2RAD,
@@ -15,33 +11,24 @@ import {
   INITIAL_ACCEL,
   LIMIT_ACCEL,
   LIMIT_ANGLE,
-  ODOM_TOPIC,
-  REVERSE_TOPIC,
+  REVERSE_TOPIC
 } from "@utils/constants"
+import { useRosContext } from "@utils/RosContext"
+import { useState } from "react"
+import { useSelector } from "react-redux"
 
-const TeleopTwist = ({ rosInstance }) => {
-  const rosIsAlive = useSelector((state) => state.ros.isConnected)
-  const [velX, setVelX] = useState(0)
+const TeleopTwist = () => {
+  const rosInstance = useRosContext()
+
   const [angleDir, setAngleDir] = useState(0)
   const [accelValue, setAccelValue] = useState(INITIAL_ACCEL)
   const [reverse, setReverse] = useState(false)
   const incrementValues = 5
-  const incrementAccelValues = 3
+  const incrementAccelValues = 2
   const modeSelector = useSelector((state) => state.ros.modeSelector)
-  const currentTime = useCurrentTime()
-
-  useEffect(() => {
-    if (rosIsAlive) {
-      rosInstance.subscribe(ODOM_TOPIC, "nav_msgs/Odometry", receivedOdometry)
-    }
-  }, [rosIsAlive])
-
-  const receivedOdometry = (message) => {
-    const newVel = Math.round(message.twist.twist.linear.x * 100) / 100
-    const changeVel = Math.abs(velX - newVel) > 0.1 ? newVel : velX
-    setVelX(changeVel)
-    currentTime.getCurrentTime()
-  }
+  const vel_x = Math.round(useSelector(state => state.odometryRobot.vel_x)*100) / 100
+  const time_odom = useSelector(state => state.odometryRobot.time)
+  
 
   const changeAccel = (newValue) => {
     rosInstance.sendMessage(ACCELERATOR_TOPIC, "std_msgs/Int16", {
@@ -137,7 +124,7 @@ const TeleopTwist = ({ rosInstance }) => {
       <Typography className="teleop-twist__title">Teleoperación</Typography>
       <Box className="teleop-twist__status">
         <Typography>
-          <strong>Velocidad lineal:</strong> {velX} m/s
+          <strong>Velocidad lineal:</strong> {vel_x} m/s
         </Typography>
         <Typography>
           <strong>Ángulo dirección</strong> {-angleDir} grados
@@ -181,14 +168,12 @@ const TeleopTwist = ({ rosInstance }) => {
         </IconButton>
       </Box>
       <Box>
-        <Typography>Última actualización: {currentTime.value}</Typography>
+        <Typography>Última actualización: {time_odom}</Typography>
       </Box>
     </Box>
   )
 }
 
-TeleopTwist.propTypes = {
-  rosInstance: PropTypes.object,
-}
+TeleopTwist.propTypes = {}
 
 export default TeleopTwist

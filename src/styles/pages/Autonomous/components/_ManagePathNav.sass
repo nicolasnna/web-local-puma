@@ -1,8 +1,14 @@
+@import '@styles/base/index'
+
 .manage-path
   display: flex
   flex-direction: column
   gap: 0.8em
   width: max-content
+
+  &__text-not-found
+    color: $text-primary
+    font-size: $size-text-normal !important
 
   &__buttons-option
     display: flex
@@ -34,19 +40,19 @@
         padding: 0.5em 1em !important
 
     &__body
-      font-size: 1.3rem
-
       &--cell
-        padding: 0.7em 1.5em !important
+        text-align: center !important
+        padding: 0.3rem 0.5rem !important
+        font-size: $size-text-normal !important
 
 @media (max-width: 1280px)
   .manage-path--container
-    max-width: 90vw
+    width: max-content
 
 @media (min-width: 768px) and (max-width: 1279px)
   .manage-path--container
-    max-width: 40vw
+    width: max-content
 
 @media (min-width: 1280px)
   .manage-path--container
-    max-width: 30vw
+    width: max-content

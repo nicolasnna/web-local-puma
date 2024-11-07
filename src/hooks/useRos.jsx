@@ -5,7 +5,7 @@ import { setConnection } from "@reducer/rosReducer"
 
 const useRos = () => {
   const [ros, setRos] = useState(null)
-  const url = useSelector(state => state.ros.rosUrl)
+  const url = useSelector((state) => state.ros.rosUrl)
   const dispatch = useDispatch()
   const [subscribers, setSubscribers] = useState([])
 
@@ -14,20 +14,20 @@ const useRos = () => {
       url: url,
     })
 
-    createRos.on('connection', () => {
-      console.log('Connected to websocket server.');
-      dispatch(setConnection(true));
-    });
+    createRos.on("connection", () => {
+      console.log("Connected to websocket server.")
+      dispatch(setConnection(true))
+    })
 
-    createRos.on('error', (error) => {
-      console.log('Error connecting to websocket server: ', error);
-      dispatch(setConnection(false));
-    });
+    createRos.on("error", (error) => {
+      console.log("Error connecting to websocket server: ", error)
+      dispatch(setConnection(false))
+    })
 
-    createRos.on('close', () => {
-      console.log('Connection to websocket server closed.');
-      dispatch(setConnection(false));
-    });
+    createRos.on("close", () => {
+      console.log("Connection to websocket server closed.")
+      dispatch(setConnection(false))
+    })
 
     setRos(createRos)
   }
@@ -37,7 +37,7 @@ const useRos = () => {
       const instanceRos = ros
       instanceRos.close()
       setRos(null)
-      console.log('Connection closed manually.')
+      console.log("Connection closed manually.")
     }
   }
 
@@ -45,33 +45,34 @@ const useRos = () => {
     const rosTopic = new ROSLIB.Topic({
       ros: ros,
       name: topic,
-      messageType: messageType
-    });
+      messageType: messageType,
+    })
 
-    const rosMessage = new ROSLIB.Message(message);
-    rosTopic.publish(rosMessage);
+    const rosMessage = new ROSLIB.Message(message)
+    rosTopic.publish(rosMessage)
   }
 
   const subscribe = (topic, messageType, callback) => {
-    if (subscribers.find(t => t.name === topic)) {
-      const actualSubscribe = subscribers.filter(t => t.name === topic)[0]
-      actualSubscribe.unsubscribe();
+    if (subscribers.find((t) => t.name === topic)) {
+      // const actualSubscribe = subscribers.filter(t => t.name === topic)[0]
+      // actualSubscribe.unsubscribe();
+      return null
     }
 
     const rosTopic = new ROSLIB.Topic({
       ros: ros,
       name: topic,
-      messageType: messageType
-    });
+      messageType: messageType,
+    })
 
-    rosTopic.subscribe(callback);
-    setSubscribers([...subscribers,rosTopic]);
+    rosTopic.subscribe(callback)
+    setSubscribers([...subscribers, rosTopic])
   }
 
   const unsubscribe = (topic) => {
-    if (subscribers.find(t => t.name === topic)) {
-      const actualSubscribe = subscribers.filter(t => t.name === topic)[0]
-      actualSubscribe.unsubscribe();
+    if (subscribers.find((t) => t.name === topic)) {
+      const actualSubscribe = subscribers.filter((t) => t.name === topic)[0]
+      actualSubscribe.unsubscribe()
     }
   }
 
@@ -82,7 +83,7 @@ const useRos = () => {
     closeConnection,
     subscribe,
     unsubscribe,
-    sendMessage
+    sendMessage,
   }
 }
 

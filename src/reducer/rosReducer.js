@@ -5,6 +5,7 @@ const initialState = {
   isConnected: false,
   rosUrl: URL_ROS_DEFAULT,
   message: [],
+  timeUploaded: "",
   modeSelector: "none",
 }
 
@@ -24,10 +25,18 @@ const rosSlice = createSlice({
     setModeSelector(state, action) {
       state.modeSelector = action.payload
     },
+    setTimeRos(state, action) {
+      state.timeUploaded = action.payload
+    },
   },
 })
 
-export const { setConnection, setRosUrl, setMessage, setModeSelector } =
-  rosSlice.actions
+export const {
+  setConnection,
+  setRosUrl,
+  setMessage,
+  setModeSelector,
+  setTimeRos,
+} = rosSlice.actions
 
 export default rosSlice.reducer

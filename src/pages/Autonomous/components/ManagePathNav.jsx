@@ -1,94 +1,42 @@
 import ContainerElement from "@components/ContainerElement"
 import {
   Box,
-  Button,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography
 } from "@mui/material"
-import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
-import {
-  WAYPOINTS_SEND_TOPIC,
-  WAYPOINTS_START_TOPIC,
-  WAYPOINTS_STOP_TOPIC,
-} from "@utils/constants"
-import { successNotification } from "@reducer/notificationReducer"
-import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import { setSelectedPosition } from "@reducer/positionReducer"
 
-const ManagePathNav = ({ rosInstance }) => {
-  const [readyPath, setReadyPath] = useState(false)
+const ManagePathNav = () => {
   const arrayPosition = useSelector((state) => state.position)
+  const selectedPosition = arrayPosition.selectedPosition
   const dispatch = useDispatch()
-  const rosIsConnected = useSelector((state) => state.ros.isConnected)
 
-  const updateWaypoints = () => {
-    if (arrayPosition.selectedPosition.length > 0 && rosIsConnected) {
-      const path = arrayPosition.selectedPosition.map((latlon) => ({
-        latitude: latlon[0],
-        longitude: latlon[1],
-      }))
-      rosInstance.sendMessage(
-        WAYPOINTS_SEND_TOPIC,
-        "puma_waypoints_msgs/GoalGpsArray",
-        { data: path }
-      )
-      console.log(path)
-      dispatch(successNotification("Los destinos han sido enviados al robot"))
-      setReadyPath(true)
-    }
+  const changePosition = (index, up) => {
+    let arrayMod = [...selectedPosition]
+    const newIndex = up ? index-1 : index+1
+    arrayMod[index] = selectedPosition[newIndex]
+    arrayMod[newIndex] = selectedPosition[index]
+    dispatch(setSelectedPosition(arrayMod))
   }
 
-  const startNavPath = () => {
-    if (readyPath) {
-      rosInstance.sendMessage(WAYPOINTS_START_TOPIC, "std_msgs/Empty", {})
-      dispatch(successNotification("Se ha enviado la señal de inicio al robot"))
-    }
-  }
-
-  const stopNavPath = () => {
-    rosInstance.sendMessage(WAYPOINTS_STOP_TOPIC, "std_msgs/Empty", {})
-    dispatch(
-      successNotification("Se ha enviado la señal de detención al robot")
-    )
-    setReadyPath(false)
-  }
 
   return (
     <ContainerElement
       extraClassName="manage-path--container"
-      Title="Configuración de destinos para la navegación"
+      Title="Lista de destinos creados"
     >
       <Box className="manage-path">
-        <Box className="manage-path__buttons-option">
-          <Button
-            className="button--primary"
-            disabled={
-              !arrayPosition.selectedPosition.length >= 1 || !rosIsConnected
-            }
-            onClick={updateWaypoints}
-          >
-            Subir al robot
-          </Button>
-          <Button
-            className="button--primary"
-            disabled={!readyPath || !rosIsConnected}
-            onClick={startNavPath}
-          >
-            Empezar
-          </Button>
-          <Button
-            className="button--secondary"
-            disabled={!rosIsConnected}
-            onClick={stopNavPath}
-          >
-            Detener
-          </Button>
-        </Box>
-        <TableContainer sx={{ maxHeight: 520 }} className="manage-path__table">
+        <TableContainer sx={{ height: 350 }} className="manage-path__table">
           <Table aria-label="table path nav">
             <TableHead className="manage-path__table__head">
               <TableRow className="manage-path__table__head--row">
@@ -110,33 +58,61 @@ const ManagePathNav = ({ rosInstance }) => {
                 >
                   Longitud
                 </TableCell>
+                <TableCell
+                  align="center"
+                  className="manage-path__table__head--cell"
+                >
+                  
+                </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody className="manage-path__table__body">
-              {arrayPosition.selectedPosition.map((pos, index) => (
-                <TableRow
-                  key={arrayPosition.labelSelection[index]}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  className="manage-path__table__body--row"
-                >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    className="manage-path__table__body--cell"
-                  >
-                    {arrayPosition.labelSelection[index]}
-                  </TableCell>
-                  <TableCell className="manage-path__table__body--cell">
-                    {pos[0].toFixed(5)}
-                  </TableCell>
-                  <TableCell className="manage-path__table__body--cell">
-                    {pos[1].toFixed(5)}
+              <TableBody className="manage-path__table__body">
+                {selectedPosition.length == 0 && 
+                <TableRow>
+                  <TableCell colSpan={4} align="center">
+                    <Typography className="manage-path__text-not-found">
+                      No existe destinos creados
+                    </Typography>
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
+                }
+                { selectedPosition.length != 0 && selectedPosition.map((pos, index) => (
+                  <TableRow
+                    key={arrayPosition.labelSelection[index]}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    className="manage-path__table__body--row"
+                  >
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      className="manage-path__table__body--cell"
+                    >
+                      <Typography>
+                        {arrayPosition.labelSelection[index]}
+                      </Typography>
+                    </TableCell>
+                    <TableCell className="manage-path__table__body--cell">
+                      {pos[0].toFixed(5)}
+                    </TableCell>
+                    <TableCell className="manage-path__table__body--cell">
+                      {pos[1].toFixed(5)}
+                    </TableCell>
+                    <TableCell className="manage-path__table__body--cell">
+                      <div>
+                        {index !== 0  && <IconButton onClick={() => changePosition(index,true)}>
+                              <KeyboardArrowUpIcon/>
+                            </IconButton>}
+                        {index !== selectedPosition.length -1 && <IconButton onClick={() => changePosition(index, false)}>
+                              <KeyboardArrowDownIcon/>
+                            </IconButton>}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
           </Table>
         </TableContainer>
+        
       </Box>
     </ContainerElement>
   )
