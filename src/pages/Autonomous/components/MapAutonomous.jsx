@@ -56,7 +56,7 @@ const MapAutonomous = ({ widthMap = "35vw", heightMap = "40vh" }) => {
     } else {
       dispatch(
         errorNotification(
-          "No se ha logrado crear el nuevo destino, mueva el marcador antes de guardar"
+          "No se ha logrado crear el nuevo destino, arrastre el marcador antes de guardar"
         )
       )
     }
@@ -79,31 +79,11 @@ const MapAutonomous = ({ widthMap = "35vw", heightMap = "40vh" }) => {
 
   return (
     <ContainerElement
-      Title={"Mapa navegación autónoma"}
+      Title={"Mapa navegación"}
       Topic={GPS_TOPIC}
       currentDate={timeGps}
     >
       <Box>
-        <Box className="map-autonomous__options">
-          <Button
-            className={createGoal ? "button--secondary" : "button--primary"}
-            onClick={startCreateGoal}
-          >
-            {createGoal ? "Cerrar creador" : "Crear destino"}
-          </Button>
-          <Button
-            className={"button--primary"}
-            disabled={!createGoal}
-            onClick={saveGoal}
-          >
-            Guardar destino
-          </Button>
-          {createGoal && (
-            <Typography>
-              Arrastra el marcador rojo para ubicar el destino
-            </Typography>
-          )}
-        </Box>
         <Map
           widthMap={widthMap}
           heightMap={heightMap}
@@ -139,6 +119,26 @@ const MapAutonomous = ({ widthMap = "35vw", heightMap = "40vh" }) => {
             {createGoal && <SelectorMarker initialPosition={position} />}
           </>
         </Map>
+        <Box className="map-autonomous__options">
+          <Button
+            className={createGoal ? "button--secondary" : "button--primary"}
+            onClick={startCreateGoal}
+          >
+            {createGoal ? "Cerrar creador" : "Crear destino"}
+          </Button>
+          <Button
+            className={"button--primary"}
+            disabled={!createGoal}
+            onClick={saveGoal}
+          >
+            Guardar destino
+          </Button>
+          
+          <Typography>
+            {createGoal ? "Arrastra el marcador rojo para ubicar el destino" : "Presione en 'crear destino' para definir waypoints"}
+          </Typography>
+          
+        </Box>
       </Box>
     </ContainerElement>
   )

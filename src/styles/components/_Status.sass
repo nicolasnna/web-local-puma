@@ -1,0 +1,45 @@
+@import '@styles/base/index'
+
+.status
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 10px
+
+  &__text
+    font-size: 1.1rem !important
+    color: $text-primary
+
+.status-controller
+  display: flex
+  justify-content: center
+  align-items: center
+  gap: 5px
+  &__text
+    font-size: 1.2rem !important
+
+  &__icon
+    color: $text-primary
+
+  &__form
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center 
+    margin: 0.4rem
+
+  &__dialog
+    background-color: $background-items 
+    &--title
+      font-size: 1.5rem !important
+      color: $text-primary
+      background-color: $background 
+
+    &--content
+      background-color: $background 
+      padding: 1rem
+      width: 400px
+      color: $text-primary
+
+    &--actions
+      background-color: $background 

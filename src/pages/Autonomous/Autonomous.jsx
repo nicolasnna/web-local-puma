@@ -6,22 +6,12 @@ import { useRosContext } from "@utils/RosContext"
 import { useSelector } from "react-redux"
 import ManagePathNav from "./components/ManagePathNav"
 import MapAutonomous from "./components/MapAutonomous"
+import RobotControl from "./components/RobotControl"
 
 const Autonomous = () => {
   const modeSelector = useSelector((state) => state.ros.modeSelector)
   const rosIsConnected = useSelector((state) => state.ros.modeSelector)
-  const { width } = useWindowSize()
   const rosInstance = useRosContext()
-
-  const getWidthMap = () => {
-    if (width < 768) {
-      return "80vw"
-    }
-    if (width < 1279) {
-      return "40vw"
-    }
-    return "50vw"
-  }
 
   const handleSwitchMode = () => {
     const newMode = modeSelector !== "autonomous" ? "autonomous" : "none"
@@ -34,23 +24,15 @@ const Autonomous = () => {
 
   return (
     <Box className="autonomous">
-      <Header Title="Modo autónomo">
-        <Switch
-          checked={modeSelector === "autonomous"}
-          onChange={handleSwitchMode}
-          className="custom-switch"
-        />
-      </Header>
       <Stack
         flexDirection="row"
-        gap={4}
-        flexWrap="wrap"
-        justifyContent={"space-around"}
+        gap={10}
         padding={0}
       >
-        <ManagePathNav />
-        <MapAutonomous widthMap={getWidthMap()} heightMap="50vh" />
+        <MapAutonomous widthMap={"700px"} heightMap="450px" />
+        <RobotControl/>
       </Stack>
+      <ManagePathNav />
     </Box>
   )
 }

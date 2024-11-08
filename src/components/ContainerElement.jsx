@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import PropTypes from "prop-types"
 
 const ContainerElement = ({
@@ -10,14 +10,14 @@ const ContainerElement = ({
 }) => {
   return (
     <Box className={`container-element ${extraClassName}`}>
-      <Stack className="container-element__header">
+      <Box className="container-element__header">
         <div className="container-element__header__title">
           <Typography variant="h3">{Title}</Typography>
         </div>
-        <div className="container-element__header__subtitle">
+        {Topic && <div className="container-element__header__subtitle">
           <Typography variant="body1">{Topic}</Typography>
-        </div>
-      </Stack>
+        </div>}
+      </Box>
       <Box className="container-element__content">{children}</Box>
       {currentDate && (
         <div className="container-element__time">
