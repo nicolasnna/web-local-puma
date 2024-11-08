@@ -1,17 +1,11 @@
 import { Typography } from "@mui/material"
 import PropTypes from "prop-types"
-import ConnectionRobotStatusItem from "./ConnectionRobot/ConnectionRobotStatusItem"
-import { useSelector } from "react-redux"
 
-const Header = ({ Title, children, extraClassName }) => {
-  const rosIsConnected = useSelector(state => state.ros.isConnected)
+const Header = ({ title, children, extraClassName }) => {
   return (
     <div className={`header ${extraClassName}`}>
-      <div>
-        <ConnectionRobotStatusItem isConnected={rosIsConnected}/>
-      </div>
       <div className={'header--title'}>
-        <Typography variant="h1">{Title}</Typography>
+        <Typography variant="h1">{title}</Typography>
       </div>
       {children}
     </div>
@@ -19,7 +13,7 @@ const Header = ({ Title, children, extraClassName }) => {
 }
 
 Header.propTypes = {
-  Title: PropTypes.string,
+  title: PropTypes.string,
   children: PropTypes.element,
   extraClassName: PropTypes.string,
 }

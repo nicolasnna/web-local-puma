@@ -1,19 +1,22 @@
-import Navbar from "@components/Navbar"
+import CameraView from "@components/CameraView"
 import Notification from "@components/Notification"
 import useCurrentTime from "@hooks/useCurrentTime"
 import useRos from "@hooks/useRos"
-import Dashboard from "@pages/Dashboard/Dashboard"
-import Manual from "@pages/Manual/Manual"
+import { Box, Stack } from "@mui/material"
+import ManagePathNav from "@components/ManagePathNav"
+import RobotControl from "@components/Control/RobotControl"
+import RosConsoleLogs from "@components/RosConsoleLogs"
 import { updateCameraRos } from "@reducer/cameraRosReducer"
 import { pushPathNav, setLatLon, setTimeGps } from "@reducer/gpsRosReducer"
+import { addOdometryData } from "@reducer/odometryRobotReducer"
 import { setMessage, setModeSelector, setTimeRos } from "@reducer/rosReducer"
-import { CURRENT_MODE, GPS_TOPIC, ODOM_TOPIC, REALSENSE_TOPIC, ROSLOG_TOPIC } from "@utils/constants"
+import { setState } from "@reducer/stateWaypointsReducer"
+import { CURRENT_MODE, GPS_TOPIC, ODOM_TOPIC, REALSENSE_TOPIC, ROSLOG_TOPIC, WAYPOINTS_STATE_STATUS } from "@utils/constants"
+import { RosContext } from "@utils/RosContext"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Route, Routes } from "react-router-dom"
-import Autonomous from "./pages/Autonomous/Autonomous"
-import { RosContext } from "@utils/RosContext"
-import { addOdometryData } from "@reducer/odometryRobotReducer"
+import MapAutonomous from "@components/Map/MapAutonomous"
+import Header from "@components/Header"
 
 function App() {
   const rosManager = useRos()
@@ -35,10 +38,19 @@ function App() {
       rosManager.subscribe(ROSLOG_TOPIC, "rosgraph_msgs/Log", callbackLogs)
       rosManager.subscribe(ODOM_TOPIC, "nav_msgs/Odometry", callbackOdometry)
       rosManager.subscribe(CURRENT_MODE, "std_msgs/String", callbackModePuma)
+      // Maquina de estados
+      rosManager.subscribe(WAYPOINTS_STATE_STATUS, "smach_msgs/SmachContainerStatus", callbackStateWaypoints)
     } else {
       rosManager.openConnection()
     }
   }, [isConnected]) // eslint-disable-line
+
+  const callbackStateWaypoints = (message) => {
+    const { active_states } = message
+    if (Array.isArray(active_states)) {
+      dispatch(setState(active_states[0]))
+    }
+  }
 
   const callbackModePuma = (message) => {
     dispatch(setModeSelector(message.data))
@@ -59,7 +71,7 @@ function App() {
 
   const callbackGps = (message) => {
     const { latitude, longitude } = message
-    const latlonCmd = { lat: Math.round(latitude * 1000)/1000, lon: Math.round(longitude * 1000)/1000 }
+    const latlonCmd = { lat: latitude, lon: longitude }
     dispatch(setLatLon(latlonCmd))
     dispatch(pushPathNav(latlonCmd))
     dispatch(setTimeGps(currentTime.getCurrentTime()))
@@ -76,19 +88,23 @@ function App() {
 
   return (
     <RosContext.Provider value={rosManager}>
-      <Navbar />
       <Notification />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route
-          path="/manual"
-          element={<Manual />}
-        />
-        <Route
-          path="/autonomous"
-          element={<Autonomous/>}
-        />
-      </Routes>
+      <Box className="dashboard" >
+        <Box className="dashboard__row">
+          <Box className="dashboard__side" height={"100%"}>
+            <Header title="Panel de control Robot Seguridad PUMA"/>
+            <MapAutonomous widthMap="800px" heightMap="500px" />
+          </Box>
+          <Box className="dashboard__side">
+            <RobotControl/>
+            <CameraView/>
+          </Box>
+        </Box>
+        <Box className="dashboard__row"> 
+          <ManagePathNav />
+          <RosConsoleLogs />
+        </Box>
+      </Box>
     </RosContext.Provider>
   )
 }

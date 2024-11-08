@@ -11,13 +11,13 @@ const CameraView = ({ extraClassName }) => {
   return (
     <ContainerElement
       Title={"Vista Realsense"}
-      Topic={REALSENSE_TOPIC}
+      Topic={"/compressed"}
       currentDate={currentTime}
       extraClassName={extraClassName}
     >
       <Box className="camera-view">
         {image ? (
-          <img src={image} alt="Camera View" className="camera-view__img" />
+          <img src={image} alt="Camera Realsense View" className="camera-view__img" />
         ) : (
           <Box className="camera-view__no-img">
             <Typography>Cámara sin conexión</Typography>

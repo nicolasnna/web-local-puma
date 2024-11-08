@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 
 const RobotControl = () => {
   const isConnected = useSelector(state => state.ros.isConnected)
+  const modeController = useSelector(state => state.ros.modeSelector)
 
   return (
     <ContainerElement
@@ -32,7 +33,7 @@ const RobotControl = () => {
           <StatusController/>
         </Box>
         <ControlAutonomous/>
-        <ControlManual/>
+        {modeController === "manual" && <ControlManual/>}
       </Box>
     </ContainerElement>
   )

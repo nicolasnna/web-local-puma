@@ -1,22 +1,26 @@
 @import '@styles/base/index'
 
-.control-manual
+.control-autonomous, .control-manual
   display: flex
   flex-direction: column
   align-items: center
   justify-content: center
   width: 400px
-  height: 330px
+  height: 250px
   gap: 10px
+  padding: 0.4rem 0
 
-  &__title
-    align-self: start
-    margin: 0 0.5rem
-    font-size: 1.5rem 
-  
+.control-manual__title, .control-autonomous__title
+  align-self: start
+  margin: 0 0.5rem
+  font-size: 1.5rem 
+
+
+.control-manual
   &__status
     display: flex
     gap: 10px
+    font-size: 1.1rem
 
   &__buttons-grid
     display: grid
@@ -49,3 +53,17 @@
     transition: 0.5s
     &:active
       color: green
+
+.control-autonomous
+  &__state
+    display: flex
+    gap: 10px
+    color: $text-primary
+    font-size: 1.1rem
+
+  &__buttons-group
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-wrap: wrap
+    gap: 10px 

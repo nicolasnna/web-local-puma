@@ -10,8 +10,26 @@ html, body
   background-size: cover
   background-attachment: fixed
 
-
 #root 
   flex: 1
   display: flex
   flex-direction: column
+
+.dashboard
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  gap: 10px
+  padding: 20px
+  
+  &__row
+    display: flex
+    align-items: center
+    gap: 3rem
+
+  &__side
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 15px

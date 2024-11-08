@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css"
 import { useSelector } from 'react-redux'
 
 const iconRobot  = (rotationAngle) => new L.divIcon({
-  html: `<div style="transform: rotate(${rotationAngle}deg)">
+  html: `<div style="transform: rotate(${rotationAngle+90}deg)">
           <img src="icon-atv.png" style="width: 42px; height: 42px;" />
         </div>`,
   iconSize: [42, 42],
@@ -40,7 +40,7 @@ const Map = ({widthMap, heightMap, latLonCenter, showPath=false, pathNav = [], c
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       maxNativeZoom={19}
-      maxZoom={22}
+      maxZoom={21}
     />
     <Marker position={latLonCenter} icon={iconRobot(degreeRobot)}>
       <Popup>

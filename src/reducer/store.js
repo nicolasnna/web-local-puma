@@ -4,7 +4,8 @@ import notificationReducer from "./notificationReducer"
 import positionReducer from "./positionReducer"
 import cameraRosReducer from "./cameraRosReducer"
 import gpsRosReducer from "./gpsRosReducer"
-import odometryRobotReducer from "./odometryRobotReducer.js"
+import odometryRobotReducer from "./odometryRobotReducer"
+import stateWaypointsReducer from './stateWaypointsReducer'
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     cameraRos: cameraRosReducer,
     gpsRos: gpsRosReducer,
     odometryRobot: odometryRobotReducer,
+    stateWaypoints: stateWaypointsReducer
   },
 })
 
