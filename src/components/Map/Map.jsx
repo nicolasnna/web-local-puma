@@ -7,11 +7,11 @@ import { useSelector } from 'react-redux'
 
 const iconRobot  = (rotationAngle) => new L.divIcon({
   html: `<div style="transform: rotate(${rotationAngle+90}deg)">
-          <img src="icon-atv.png" style="width: 42px; height: 42px;" />
+          <img src="icon-atv.png" style="width:66px; height:66px;" />
         </div>`,
-  iconSize: [42, 42],
-  iconAnchor: [21, 21],
-  popupAnchor: [1, -34],
+  // iconSize: [42, 42],
+  iconAnchor: [33, 33],
+  popupAnchor: [-20, 0],
   className: "no-background-icon"
 })
 
@@ -28,7 +28,7 @@ RecenterAutomatically.propTypes = {
   lng: PropTypes.number,
 }
 
-const Map = ({widthMap, heightMap, latLonCenter, showPath=false, pathNav = [], children}) => {
+export const Map = ({widthMap, heightMap, latLonCenter, showPath=false, pathNav = [], children}) => {
   const degreeRobot = useSelector(state => state.odometryRobot.yaw)
   return (
   <MapContainer
@@ -69,5 +69,3 @@ Map.propTypes = {
   pathNav: PropTypes.array,
   children: PropTypes.element
 }
-
-export default Map

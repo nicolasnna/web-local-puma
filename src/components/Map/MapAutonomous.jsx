@@ -1,5 +1,5 @@
 import ContainerElement from "@components/ContainerElement"
-import Map from "@components/Map/Map"
+import {Map, SelectorMarker} from "."
 import { Box, Button, Stack, Typography } from "@mui/material"
 import {
   errorNotification,
@@ -12,7 +12,6 @@ import PropTypes from "prop-types"
 import { useState } from "react"
 import { Marker, Popup } from "react-leaflet"
 import { useDispatch, useSelector } from "react-redux"
-import SelectorMarker from "./SelectorMarker"
 
 const iconLastGoal = new L.Icon({
   iconUrl: "goal.png",
@@ -24,15 +23,14 @@ const iconLastGoal = new L.Icon({
 const iconPLannedGoal = (number) => new L.divIcon({
   html: `<div >
     <p style="position: absolute">${number}</p>
-    <img src ="path-goal.png" style="width: 41px; height: 41px;"/>
+    <img src ="path-goal.png" style="width: 50px; height: 50px;"/>
   </div>`,
-  iconSize: [41, 41],
-  iconAnchor: [13, 41],
+  iconAnchor: [15, 48],
   popupAnchor: [1, -34],
   className: "no-background-icon"
 })
 
-const MapAutonomous = ({ widthMap = "35vw", heightMap = "40vh" }) => {
+export const MapAutonomous = ({ widthMap = "35vw", heightMap = "40vh" }) => {
   const [createGoal, setCreateGoal] = useState(false)
   const [draggableMarkerIndex, setDraggableMarkerIndex] = useState(null) // Estado para el índice del marcador arrastrable
   const storePosition = useSelector((state) => state.position)
@@ -151,4 +149,3 @@ MapAutonomous.propTypes = {
   heightMap: PropTypes.string,
 }
 
-export default MapAutonomous

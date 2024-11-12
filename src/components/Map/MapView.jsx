@@ -2,9 +2,9 @@ import ContainerElement from "@components/ContainerElement"
 import { GPS_TOPIC } from "@utils/constants"
 import PropTypes from "prop-types"
 import { useSelector } from "react-redux"
-import Map from "./Map"
+import { Map } from "."
 
-const MapView = ({
+export const MapView = ({
   showPath = false,
   widthMap = "30vw",
   heightMap = "40vh",
@@ -38,5 +38,3 @@ MapView.propTypes = {
   heightMap: PropTypes.string,
   extraClassName: PropTypes.string,
 }
-
-export default MapView

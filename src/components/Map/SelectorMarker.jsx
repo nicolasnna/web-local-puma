@@ -13,7 +13,7 @@ const customIcon = new L.Icon({
   popupAnchor: [1, -34],  
 });
 
-function SelectorMarker({initialPosition}) {
+export function SelectorMarker({initialPosition}) {
   const [position, setPosition] = useState(initialPosition)
   const arrayPosition = useSelector(state => state.position.selectedPosition)
   const markerRef = useRef(initialPosition)
@@ -51,5 +51,3 @@ function SelectorMarker({initialPosition}) {
 SelectorMarker.propTypes = {
   initialPosition: PropTypes.array,
 }
-
-export default SelectorMarker

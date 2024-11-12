@@ -15,6 +15,7 @@ export const WAYPOINTS_START_TOPIC = "/puma/waypoints/plan_ready"
 export const WAYPOINTS_STOP_TOPIC = "/puma/waypoints/plan_stop"
 export const WAYPOINTS_RESET_TOPIC = "/puma/waypoints/plan_reset"
 export const WAYPOINTS_STATE_STATUS = "/puma/smach/container_status"
+export const WAYPOINTS_GPS_NAV_INFO = "/puma/waypoints/gps_nav_info" 
 
 
 export const LIMIT_ANGLE = 45

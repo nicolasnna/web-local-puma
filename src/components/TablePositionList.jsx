@@ -1,4 +1,6 @@
 import ContainerElement from "@components/ContainerElement"
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
 import {
   Box,
   IconButton,
@@ -8,32 +10,33 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from "@mui/material"
 import PropTypes from "prop-types"
-import { useDispatch, useSelector } from "react-redux"
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import { setSelectedPosition } from "@reducer/positionReducer"
+import { useDispatch } from "react-redux"
 
-const ManagePathNav = () => {
-  const arrayPosition = useSelector((state) => state.position)
-  const selectedPosition = arrayPosition.selectedPosition
+const TablePositionList = ({
+  title,
+  valueList,
+  labelList,
+  setValueList = () => {},
+  addChangePosition = false,
+}) => {
+  const positionList = valueList
   const dispatch = useDispatch()
 
   const changePosition = (index, up) => {
-    let arrayMod = [...selectedPosition]
-    const newIndex = up ? index-1 : index+1
-    arrayMod[index] = selectedPosition[newIndex]
-    arrayMod[newIndex] = selectedPosition[index]
-    dispatch(setSelectedPosition(arrayMod))
+    let arrayMod = [...positionList]
+    const newIndex = up ? index - 1 : index + 1
+    arrayMod[index] = positionList[newIndex]
+    arrayMod[newIndex] = positionList[index]
+    dispatch(setValueList(arrayMod))
   }
-
 
   return (
     <ContainerElement
       extraClassName="manage-path--container"
-      Title="Lista de destinos creados"
+      Title={title}
     >
       <Box className="manage-path">
         <TableContainer sx={{ height: 350 }} className="manage-path__table">
@@ -58,16 +61,16 @@ const ManagePathNav = () => {
                 >
                   Longitud
                 </TableCell>
-                <TableCell
-                  align="center"
-                  className="manage-path__table__head--cell"
-                >
-                  
-                </TableCell>
+                {addChangePosition && (
+                  <TableCell
+                    align="center"
+                    className="manage-path__table__head--cell"
+                  ></TableCell>
+                )}
               </TableRow>
             </TableHead>
-              <TableBody className="manage-path__table__body">
-                {selectedPosition.length == 0 && 
+            <TableBody className="manage-path__table__body">
+              {positionList.length == 0 && (
                 <TableRow>
                   <TableCell colSpan={4} align="center">
                     <Typography className="manage-path__text-not-found">
@@ -75,10 +78,11 @@ const ManagePathNav = () => {
                     </Typography>
                   </TableCell>
                 </TableRow>
-                }
-                { selectedPosition.length != 0 && selectedPosition.map((pos, index) => (
+              )}
+              {positionList.length != 0 &&
+                positionList.map((pos, index) => (
                   <TableRow
-                    key={arrayPosition.labelSelection[index]}
+                    key={labelList[index]}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     className="manage-path__table__body--row"
                   >
@@ -87,9 +91,7 @@ const ManagePathNav = () => {
                       scope="row"
                       className="manage-path__table__body--cell"
                     >
-                      <Typography>
-                        {arrayPosition.labelSelection[index]}
-                      </Typography>
+                      <Typography>{labelList[index]}</Typography>
                     </TableCell>
                     <TableCell className="manage-path__table__body--cell">
                       {pos[0].toFixed(5)}
@@ -97,29 +99,42 @@ const ManagePathNav = () => {
                     <TableCell className="manage-path__table__body--cell">
                       {pos[1].toFixed(5)}
                     </TableCell>
-                    <TableCell className="manage-path__table__body--cell">
-                      <div>
-                        {index !== 0  && <IconButton onClick={() => changePosition(index,true)}>
-                              <KeyboardArrowUpIcon/>
-                            </IconButton>}
-                        {index !== selectedPosition.length -1 && <IconButton onClick={() => changePosition(index, false)}>
-                              <KeyboardArrowDownIcon/>
-                            </IconButton>}
-                      </div>
-                    </TableCell>
+                    {addChangePosition && (
+                      <TableCell className="manage-path__table__body--cell">
+                        <div>
+                          {index !== 0 && (
+                            <IconButton
+                              onClick={() => changePosition(index, true)}
+                            >
+                              <KeyboardArrowUpIcon />
+                            </IconButton>
+                          )}
+                          {index !== positionList.length - 1 && (
+                            <IconButton
+                              onClick={() => changePosition(index, false)}
+                            >
+                              <KeyboardArrowDownIcon />
+                            </IconButton>
+                          )}
+                        </div>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
-              </TableBody>
+            </TableBody>
           </Table>
         </TableContainer>
-        
       </Box>
     </ContainerElement>
   )
 }
 
-ManagePathNav.propTypes = {
-  rosInstance: PropTypes.object,
+TablePositionList.propTypes = {
+  title: PropTypes.string,
+  valueList: PropTypes.array,
+  labelList: PropTypes.array,
+  setValueList: PropTypes.func,
+  addChangePosition: PropTypes.bool,
 }
 
-export default ManagePathNav
+export default TablePositionList

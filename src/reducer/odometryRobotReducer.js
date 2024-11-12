@@ -24,7 +24,6 @@ export const addOdometryData = (rosOdometry, time) => {
     const qua = rosOdometry.pose.pose.orientation
     const yaw = Math.atan2(2 * (qua.w * qua.z + qua.x * qua.y), 1 - 2 * (qua.y * qua.y + qua.z * qua.z)); 
     const yawDegrees = Math.round(yaw * -(180 / Math.PI));
-    console.log("Angulo del robot: ",yawDegrees)
 
     dispatch(setUpdateValues({vel_x: vel_x, yaw: yawDegrees, time: time}))
   }
