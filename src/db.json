@@ -1,0 +1,32 @@
+{
+  "topics": {
+    "realsense": {
+      "name": "/puma/camera/color/image_raw/compressed",
+      "messageType": "sensor_msgs/CompressedImage"
+    },
+    "gps": {
+      "name": "/puma/sensors/gps/fix",
+      "messageType": "sensor_msgs/NavSatFix"
+    },
+    "roslog": {
+      "name": "/rosout",
+      "messageType": "rosgraph_msgs/Log"
+    },
+    "odometry": {
+      "name": "/puma/odometry/filtered",
+      "messageType": "nav_msgs/Odometry"
+    },
+    "current_control_mode": {
+      "name": "/puma/control/current_mode",
+      "messageType": "std_msgs/String"
+    },
+    "waypoints_current_mode": {
+      "name": "/puma/smach/container_status",
+      "messageType": "smach_msgs/SmachContainerStatus"
+    },
+    "waypoints_gps_info": {
+      "name": "/puma/waypoints/gps_nav_info",
+      "messageType": "puma_waypoints_msgs/GoalGpsNavInfo"
+    }
+  }
+}

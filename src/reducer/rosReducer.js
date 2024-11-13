@@ -1,42 +1,44 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { URL_ROS_DEFAULT } from "@utils/constants"
+import { createSlice } from '@reduxjs/toolkit';
+import { URL_ROS_DEFAULT } from '@utils/constants';
 
 const initialState = {
   isConnected: false,
-  rosUrl: URL_ROS_DEFAULT,
+  url: URL_ROS_DEFAULT,
   message: [],
-  timeUploaded: "",
-  modeSelector: "none",
-}
+  timeMessage: '',
+  controlMode: 'none',
+};
 
 const rosSlice = createSlice({
-  name: "ros",
+  name: 'ros',
   initialState,
   reducers: {
     setConnection(state, action) {
-      state.isConnected = action.payload
+      state.isConnected = action.payload;
     },
-    setRosUrl(state, action) {
-      state.rosUrl = action.payload
+    setValue(state, action) {
+      state[action.payload.key] = action.payload.value;
     },
-    setMessage(state, action) {
-      state.message.push(action.payload)
-    },
-    setModeSelector(state, action) {
-      state.modeSelector = action.payload
-    },
-    setTimeRos(state, action) {
-      state.timeUploaded = action.payload
+    pushValue(state, action) {
+      if (Array.isArray(state[action.payload.key])) {
+        state[action.payload.key].push(action.payload.value);
+      }
     },
   },
-})
+});
 
-export const {
-  setConnection,
-  setRosUrl,
-  setMessage,
-  setModeSelector,
-  setTimeRos,
-} = rosSlice.actions
+export const { setConnection, setValue, pushValue } = rosSlice.actions;
 
-export default rosSlice.reducer
+export const setRosValue = (key, value) => {
+  return async (dispatch) => {
+    await dispatch(setValue({ key, value }));
+  };
+};
+
+export const pushRosValue = (key, value) => {
+  return async (dispatch) => {
+    await dispatch(pushValue({ key, value }));
+  };
+};
+
+export default rosSlice.reducer;

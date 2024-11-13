@@ -1,80 +1,79 @@
-import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import ROSLIB from "roslib"
-import { setConnection } from "@reducer/rosReducer"
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ROSLIB from 'roslib';
+import { setConnection } from '@reducer/rosReducer';
 
 const useRos = () => {
-  const [ros, setRos] = useState(null)
-  const url = useSelector((state) => state.ros.rosUrl)
-  const dispatch = useDispatch()
-  const [subscribers, setSubscribers] = useState([])
+  const [ros, setRos] = useState(null);
+  const url = useSelector((state) => state.ros.url);
+  const dispatch = useDispatch();
+  const [subscribers, setSubscribers] = useState({});
 
   const openConnection = () => {
-    const createRos = new ROSLIB.Ros({
-      url: url,
-    })
+    if (ros) return;
 
-    createRos.on("connection", () => {
-      console.log("Connected to websocket server.")
-      dispatch(setConnection(true))
-    })
+    const createRos = new ROSLIB.Ros({ url });
 
-    createRos.on("error", (error) => {
-      console.log("Error connecting to websocket server: ", error)
-      dispatch(setConnection(false))
-    })
+    createRos.on('connection', () => {
+      console.log('Conectado con websocket server.');
+      dispatch(setConnection(true));
+    });
 
-    createRos.on("close", () => {
-      console.log("Connection to websocket server closed.")
-      dispatch(setConnection(false))
-    })
+    createRos.on('error', (error) => {
+      console.log('Error al conectar con websocket server: ', error);
+      dispatch(setConnection(false));
+    });
 
-    setRos(createRos)
-  }
+    createRos.on('close', () => {
+      console.log('Conección con websocket server cerrada.');
+      dispatch(setConnection(false));
+      setRos(null);
+    });
+
+    setRos(createRos);
+  };
 
   const closeConnection = () => {
     if (ros) {
-      const instanceRos = ros
-      instanceRos.close()
-      setRos(null)
-      console.log("Connection closed manually.")
+      const instanceRos = ros;
+      instanceRos.close();
+      setRos(null);
+      console.log('Connection closed manually.');
     }
-  }
+  };
 
-  const sendMessage = (topic, messageType, message) => {
-    const rosTopic = new ROSLIB.Topic({
-      ros: ros,
-      name: topic,
-      messageType: messageType,
-    })
+  const sendMessage = (name, messageType, message) => {
+    const rosTopic = new ROSLIB.Topic({ ros, name, messageType });
 
-    const rosMessage = new ROSLIB.Message(message)
-    rosTopic.publish(rosMessage)
-  }
+    const rosMessage = new ROSLIB.Message(message);
+    rosTopic.publish(rosMessage);
+  };
 
-  const subscribe = (topic, messageType, callback) => {
-    if (subscribers.find((t) => t.name === topic)) {
-      // const actualSubscribe = subscribers.filter(t => t.name === topic)[0]
-      // actualSubscribe.unsubscribe();
-      return null
-    }
+  const subscribe = (name, messageType, callback) => {
+    if (!ros || subscribers[name]) return;
 
-    const rosTopic = new ROSLIB.Topic({
-      ros: ros,
-      name: topic,
-      messageType: messageType,
-    })
+    const rosTopic = new ROSLIB.Topic({ ros, name, messageType });
+    rosTopic.subscribe((msg) => callback(msg, dispatch));
 
-    rosTopic.subscribe(callback)
-    setSubscribers([...subscribers, rosTopic])
-  }
+    setSubscribers((prev) => ({ ...prev, [name]: rosTopic }));
+  };
 
   const unsubscribe = (topic) => {
-    if (subscribers.find((t) => t.name === topic)) {
-      const actualSubscribe = subscribers.filter((t) => t.name === topic)[0]
-      actualSubscribe.unsubscribe()
+    if (subscribers[topic]) {
+      subscribers[topic].unsubscribe();
+      setSubscribers((prev) => {
+        const newSubscribers = { ...prev };
+        delete newSubscribers[topic];
+        return newSubscribers;
+      });
     }
-  }
+  };
+
+  /* Reconectar al cambiar url */
+  useEffect(() => {
+    openConnection();
+    return () => closeConnection();
+  }, [url]); // eslint-disable-line
 
   return {
     ros,
@@ -84,7 +83,7 @@ const useRos = () => {
     subscribe,
     unsubscribe,
     sendMessage,
-  }
-}
+  };
+};
 
-export default useRos
+export default useRos;

@@ -1,8 +1,8 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import SettingsIcon from '@mui/icons-material/Settings'
-import { useState } from 'react'
-import { useRosContext } from '@utils/RosContext'
+import { useContext, useState } from 'react'
+import { RosContext } from '@utils/RosProvider'
 import { MODE_SELECTOR_TOPIC } from '@utils/constants'
 import { errorNotification, infoNotification } from '@reducer/notificationReducer'
 
@@ -11,7 +11,7 @@ const StatusController = () => {
   const modeController = useSelector(state => state.ros.modeSelector)
   const [newModeSelect, setNewModeSelect] = useState(modeController)
   const haveConnection = useSelector(state=> state.ros.isConnected)
-  const rosInstance = useRosContext()
+  const ros = useContext(RosContext)
   const dispatch = useDispatch()
 
   const handleChangeNewMode = (e) => {
@@ -21,7 +21,7 @@ const StatusController = () => {
   const handleAcceptModal = () => {
     setOpenDialog(false)
     if (haveConnection) {
-      rosInstance.sendMessage(
+      ros.sendMessage(
         MODE_SELECTOR_TOPIC,
         "std_msgs/String",
         {

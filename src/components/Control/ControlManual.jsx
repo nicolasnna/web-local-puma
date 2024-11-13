@@ -1,40 +1,40 @@
 import { Box, IconButton, Typography } from '@mui/material'
-import { useRosContext } from '@utils/RosContext'
+import { RosContext } from '@utils/RosProvider'
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward"
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward"
 import BlockIcon from '@mui/icons-material/Block';
 import TurnLeftIcon from "@mui/icons-material/TurnLeft"
 import TurnRightIcon from "@mui/icons-material/TurnRight"
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ACCELERATOR_TOPIC, BRAKE_TOPIC, DEG2RAD, DIRECTION_TOPIC, INITIAL_ACCEL, LIMIT_ACCEL, LIMIT_ANGLE, REVERSE_TOPIC } from '@utils/constants'
 import { useSelector } from 'react-redux'
 
 const ControlManual = () => {
-  const rosInstance = useRosContext()
+  const ros = useContext(RosContext)
   const [angleDir, setAngleDir] = useState(0)
   const [accelValue, setAccelValue] = useState(INITIAL_ACCEL)
   const [reverse, setReverse] = useState(false)
-  const modeSelector = useSelector(state => state.ros.modeSelector)
-  const vel_x = Math.round(useSelector(state => state.odometryRobot.vel_x)*10) / 10
-  const time_odom = useSelector(state => state.odometryRobot.time)
+  const modeSelector = useSelector(state => state.ros.controlMode)
+  const vel_x = Math.round(useSelector(state => state.subscribers.odometry.velX)*10) / 10
+
   const incrementaAngleValues = 5
   const incrementAccelValues = 2
 
   const changeAccelROS = (newValue) => {
-    rosInstance.sendMessage(ACCELERATOR_TOPIC, "std_msgs/Int16", {
+    ros.sendMessage(ACCELERATOR_TOPIC, "std_msgs/Int16", {
       data: newValue,
     })
     changeBrakeROS(false)
   }
 
   const changeBrakeROS = (isActivate) => {
-    rosInstance.sendMessage(BRAKE_TOPIC, "puma_brake_msgs/BrakeCmd", {
+    ros.sendMessage(BRAKE_TOPIC, "puma_brake_msgs/BrakeCmd", {
       activate_brake: isActivate,
     })
   }
 
   const changeDirectionROS = (newValue) => {
-    rosInstance.sendMessage(
+    ros.sendMessage(
       DIRECTION_TOPIC,
       "puma_direction_msgs/DirectionCmd",
       {
@@ -45,8 +45,8 @@ const ControlManual = () => {
   }
 
   const changeReverseROS = (newValue) => {
-    rosInstance.sendMessage(REVERSE_TOPIC, "std_msgs/Bool", { data: newValue })
-    rosInstance.sendMessage("/puma/brake/command", "puma_brake_msgs/BrakeCmd", {
+    ros.sendMessage(REVERSE_TOPIC, "std_msgs/Bool", { data: newValue })
+    ros.sendMessage("/puma/brake/command", "puma_brake_msgs/BrakeCmd", {
       activate_brake: true,
     })
   }

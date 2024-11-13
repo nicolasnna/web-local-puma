@@ -1,17 +1,18 @@
-import { useRosContext } from '@utils/RosContext'
+import { RosContext } from '@utils/RosProvider'
 import { Box, Button, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { WAYPOINTS_RESET_TOPIC, WAYPOINTS_SEND_TOPIC, WAYPOINTS_START_TOPIC, WAYPOINTS_STOP_TOPIC } from '@utils/constants'
 import { infoNotification } from '@reducer/notificationReducer'
+import { useContext } from 'react'
 
 const ControlAutonomous = () => {
-  const rosInstance = useRosContext()
+  const ros = useContext(RosContext)
   const dispatch = useDispatch()
-  const stateWaypoint = useSelector(state => state.stateWaypoints.state)
-  const arrayGpsPosition = useSelector(state => state.position.selectedPosition)
+  const stateWaypoint = useSelector(state => state.waypoints.robot.state)
+  const arrayGpsPosition = useSelector(state => state.waypoints.web.waypoints)
 
   const sendCommandWaypoint = (topic) => {
-    rosInstance.sendMessage(
+    ros.sendMessage(
       topic,
       "std_msgs/Empty",
       {}
@@ -20,11 +21,9 @@ const ControlAutonomous = () => {
 
   const handleSendGoalGps = () => {
     const msgGps = arrayGpsPosition.map(p => {
-      let dict = new Object()
-      dict = {"latitude": p[0], "longitude": p[1]}
-      return dict
+      return {latitude: p.latitude, longitude: p.longitude}
       })
-    rosInstance.sendMessage(WAYPOINTS_SEND_TOPIC, "puma_waypoints_msgs/GoalGpsArray", {data: msgGps})
+    ros.sendMessage(WAYPOINTS_SEND_TOPIC, "puma_waypoints_msgs/GoalGpsArray", {data: msgGps})
     dispatch(infoNotification("Se ha enviado los waypoints gps al robot."))
   }
 

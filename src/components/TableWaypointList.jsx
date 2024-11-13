@@ -1,6 +1,6 @@
-import ContainerElement from "@components/ContainerElement"
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
+import ContainerElement from '@components/ContainerElement';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   Box,
   IconButton,
@@ -11,33 +11,35 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@mui/material"
-import PropTypes from "prop-types"
-import { useDispatch } from "react-redux"
+} from '@mui/material';
+import { setWaypointsKeyValue } from '@reducer/waypointsReducer';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
-const TablePositionList = ({
-  title,
-  valueList,
-  labelList,
-  setValueList = () => {},
-  addChangePosition = false,
-}) => {
-  const positionList = valueList
-  const dispatch = useDispatch()
+const TableWaypointList = ({ title, keyChangePosition, waypoints }) => {
+  const dispatch = useDispatch();
+  const validCorrectKey =
+    keyChangePosition === 'web' || keyChangePosition === 'robot';
 
   const changePosition = (index, up) => {
-    let arrayMod = [...positionList]
-    const newIndex = up ? index - 1 : index + 1
-    arrayMod[index] = positionList[newIndex]
-    arrayMod[newIndex] = positionList[index]
-    dispatch(setValueList(arrayMod))
-  }
+    let arrayMod = [...waypoints];
+    const newIndex = up ? index - 1 : index + 1;
+    arrayMod[index] = {
+      latitude: waypoints[newIndex].latitude,
+      longitude: waypoints[newIndex].longitude,
+      label: arrayMod[index].label,
+    };
+    arrayMod[newIndex] = {
+      latitude: waypoints[index].latitude,
+      longitude: waypoints[index].longitude,
+      label: arrayMod[newIndex].label,
+    };
+
+    dispatch(setWaypointsKeyValue(keyChangePosition, 'waypoints', arrayMod));
+  };
 
   return (
-    <ContainerElement
-      extraClassName="manage-path--container"
-      Title={title}
-    >
+    <ContainerElement extraClassName="manage-path--container" Title={title}>
       <Box className="manage-path">
         <TableContainer sx={{ height: 350 }} className="manage-path__table">
           <Table aria-label="table path nav">
@@ -61,7 +63,7 @@ const TablePositionList = ({
                 >
                   Longitud
                 </TableCell>
-                {addChangePosition && (
+                {validCorrectKey && (
                   <TableCell
                     align="center"
                     className="manage-path__table__head--cell"
@@ -70,7 +72,7 @@ const TablePositionList = ({
               </TableRow>
             </TableHead>
             <TableBody className="manage-path__table__body">
-              {positionList.length == 0 && (
+              {waypoints.length == 0 && (
                 <TableRow>
                   <TableCell colSpan={4} align="center">
                     <Typography className="manage-path__text-not-found">
@@ -79,11 +81,11 @@ const TablePositionList = ({
                   </TableCell>
                 </TableRow>
               )}
-              {positionList.length != 0 &&
-                positionList.map((pos, index) => (
+              {waypoints.length != 0 &&
+                waypoints.map((w, index) => (
                   <TableRow
-                    key={labelList[index]}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    key={w.label}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     className="manage-path__table__body--row"
                   >
                     <TableCell
@@ -91,15 +93,15 @@ const TablePositionList = ({
                       scope="row"
                       className="manage-path__table__body--cell"
                     >
-                      <Typography>{labelList[index]}</Typography>
+                      <Typography>{w.label}</Typography>
                     </TableCell>
                     <TableCell className="manage-path__table__body--cell">
-                      {pos[0].toFixed(5)}
+                      {w.latitude.toFixed(5)}
                     </TableCell>
                     <TableCell className="manage-path__table__body--cell">
-                      {pos[1].toFixed(5)}
+                      {w.longitude.toFixed(5)}
                     </TableCell>
-                    {addChangePosition && (
+                    {validCorrectKey && (
                       <TableCell className="manage-path__table__body--cell">
                         <div>
                           {index !== 0 && (
@@ -109,7 +111,7 @@ const TablePositionList = ({
                               <KeyboardArrowUpIcon />
                             </IconButton>
                           )}
-                          {index !== positionList.length - 1 && (
+                          {index !== waypoints.length - 1 && (
                             <IconButton
                               onClick={() => changePosition(index, false)}
                             >
@@ -126,15 +128,20 @@ const TablePositionList = ({
         </TableContainer>
       </Box>
     </ContainerElement>
-  )
-}
+  );
+};
 
-TablePositionList.propTypes = {
+TableWaypointList.propTypes = {
   title: PropTypes.string,
-  valueList: PropTypes.array,
-  labelList: PropTypes.array,
-  setValueList: PropTypes.func,
-  addChangePosition: PropTypes.bool,
-}
+  keyChangePosition: PropTypes.string,
+  waypoints: PropTypes.arrayOf(
+    PropTypes.shape({
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
+      yaw: PropTypes.number,
+      label: PropTypes.string,
+    })
+  ),
+};
 
-export default TablePositionList
+export default TableWaypointList;

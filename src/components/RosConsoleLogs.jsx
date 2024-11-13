@@ -1,16 +1,14 @@
 import ContainerElement from "@components/ContainerElement"
 import { Box } from "@mui/material"
-import { ROSLOG_TOPIC } from "@utils/constants"
 import { useSelector } from "react-redux"
 
 const RosConsoleLogs = () => {
-  const { message, timeUploaded } = useSelector((state) => state.ros)
+  const { message, timeMessage } = useSelector((state) => state.ros)
 
   return (
     <ContainerElement
       Title={"Registros ROS"}
-      Topic={ROSLOG_TOPIC}
-      currentDate={timeUploaded}
+      currentDate={timeMessage}
     >
       <Box className="console-log">
         {message.map((m, index) => (

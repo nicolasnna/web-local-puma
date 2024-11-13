@@ -1,151 +1,165 @@
-import ContainerElement from "@components/ContainerElement"
-import {Map, SelectorMarker} from "."
-import { Box, Button, Stack, Typography } from "@mui/material"
+import ContainerElement from '@components/ContainerElement';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import {
   errorNotification,
   successNotification,
-} from "@reducer/notificationReducer"
-import { addLabel, addPosition, updatePosition } from "@reducer/positionReducer"
-import { GPS_TOPIC } from "@utils/constants"
-import L from "leaflet"
-import PropTypes from "prop-types"
-import { useState } from "react"
-import { Marker, Popup } from "react-leaflet"
-import { useDispatch, useSelector } from "react-redux"
+} from '@reducer/notificationReducer';
+import {
+  pushWaypointsKeyValue,
+  setWaypointsKeyValue,
+} from '@reducer/waypointsReducer';
+import L from 'leaflet';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Marker, Popup } from 'react-leaflet';
+import { useDispatch, useSelector } from 'react-redux';
+import { Map, SelectorMarker } from '.';
 
 const iconLastGoal = new L.Icon({
-  iconUrl: "goal.png",
+  iconUrl: 'goal.png',
   iconSize: [41, 41],
   iconAnchor: [13, 41],
   popupAnchor: [1, -34],
-})
+});
 
-const iconPLannedGoal = (number) => new L.divIcon({
-  html: `<div >
+const iconPLannedGoal = (number) =>
+  new L.divIcon({
+    html: `<div >
     <p style="position: absolute">${number}</p>
     <img src ="path-goal.png" style="width: 50px; height: 50px;"/>
   </div>`,
-  iconAnchor: [15, 48],
-  popupAnchor: [1, -34],
-  className: "no-background-icon"
-})
+    iconAnchor: [15, 48],
+    popupAnchor: [1, -34],
+    className: 'no-background-icon',
+  });
 
-export const MapAutonomous = ({ widthMap = "35vw", heightMap = "40vh" }) => {
-  const [createGoal, setCreateGoal] = useState(false)
-  const [draggableMarkerIndex, setDraggableMarkerIndex] = useState(null) // Estado para el índice del marcador arrastrable
-  const storePosition = useSelector((state) => state.position)
-  const dispatch = useDispatch()
-  const newPosition = useSelector((state) => state.gpsRos.latLon)
-  const timeGps = useSelector(state => state.gpsRos.timeUploaded)
-  const position = newPosition.length > 0 ? newPosition : [-33.421946, -70.5819]
+export const MapAutonomous = ({ widthMap = '35vw', heightMap = '40vh' }) => {
+  const [createGoal, setCreateGoal] = useState(false);
+  const [draggableMarkerIndex, setDraggableMarkerIndex] = useState(null);
+  const { waypoints, currentSelection } = useSelector(
+    (state) => state.waypoints.web
+  );
+  const dispatch = useDispatch();
+  const { latitude, longitude, time } = useSelector(
+    (state) => state.subscribers.gps
+  );
 
   const startCreateGoal = () => {
-    setCreateGoal(!createGoal)
-  }
+    setCreateGoal(!createGoal);
+  };
 
   const saveGoal = () => {
-    if (storePosition.currentSelection.length !== 0) {
-      dispatch(addPosition(storePosition.currentSelection))
-      const number = storePosition.selectedPosition.length + 1
-      dispatch(addLabel(`Destino ${number}`))
+    if (currentSelection.latitude) {
+      const label = `Destino ${waypoints.length + 1}`;
+
       dispatch(
-        successNotification(`Se ha creado correctamente el destino ${number}`)
-      )
+        pushWaypointsKeyValue('web', 'waypoints', {
+          ...currentSelection,
+          label,
+        })
+      );
+      dispatch(setWaypointsKeyValue('web', 'currentSelection', {}));
+      dispatch(successNotification(`Se ha creado correctamente '${label}'`));
     } else {
       dispatch(
         errorNotification(
-          "No se ha logrado crear el nuevo destino, arrastre el marcador antes de guardar"
+          'No se ha logrado crear el nuevo destino, arrastre el marcador antes de guardar'
         )
-      )
+      );
     }
-  }
+  };
 
   const toggleDraggable = (index) => {
-    setDraggableMarkerIndex(index === draggableMarkerIndex ? null : index)
-  }
+    setDraggableMarkerIndex(index === draggableMarkerIndex ? null : index);
+  };
 
   const handleDragEnd = (event, index) => {
-    const { lat, lng } = event.target.getLatLng()
-    const updatedPosition = [lat, lng]
-
-    // Actualiza la posición en Redux
-    console.log(updatedPosition)
-    dispatch(updatePosition({ index, position: updatedPosition }))
+    const { lat, lng } = event.target.getLatLng();
+    console.log(waypoints);
+    let newWaypoints = [...waypoints];
+    newWaypoints[index] = {
+      latitude: lat,
+      longitude: lng,
+      label: newWaypoints[index].label,
+    };
+    console.log(newWaypoints);
+    dispatch(setWaypointsKeyValue('web', 'waypoints', newWaypoints));
     // Desactiva el modo arrastrable
-    setDraggableMarkerIndex(null)
-  }
+    setDraggableMarkerIndex(null);
+  };
 
   return (
-    <ContainerElement
-      Title={"Mapa navegación"}
-      Topic={GPS_TOPIC}
-      currentDate={timeGps}
-    >
+    <ContainerElement Title={'Mapa navegación'} currentDate={time}>
       <Box>
         <Map
           widthMap={widthMap}
           heightMap={heightMap}
-          latLonCenter={position}
+          latitude={latitude}
+          longitude={longitude}
           showPath={true}
         >
           <>
-            {storePosition.selectedPosition.map((pos, index) => (
+            {waypoints.map((w, index) => (
               <Marker
                 key={`Destino ${index + 1}`}
-                position={pos}
+                position={[w.latitude, w.longitude]}
                 icon={
-                  index === storePosition.selectedPosition.length - 1
+                  index === waypoints.length - 1
                     ? iconLastGoal
-                    : iconPLannedGoal(index+1)
+                    : iconPLannedGoal(index + 1)
                 }
-                draggable={index === draggableMarkerIndex} // Activa o desactiva el arrastre según el índice
+                draggable={index === draggableMarkerIndex}
                 eventHandlers={{
                   dragend: (event) => handleDragEnd(event, index),
                 }}
               >
                 <Popup>
                   <Stack padding={0}>
-                    {storePosition.labelSelection[index]}: [{pos[0].toFixed(4)},{" "}
-                    {pos[1].toFixed(4)}]
+                    {waypoints.label}: [{w.latitude.toFixed(4)},{' '}
+                    {w.longitude.toFixed(4)}]
                     <Button onClick={() => toggleDraggable(index)}>
-                      {index === draggableMarkerIndex ? "Fijar posición" : "Mover destino"}
+                      {index === draggableMarkerIndex
+                        ? 'Fijar posición'
+                        : 'Mover destino'}
                     </Button>
                   </Stack>
                 </Popup>
               </Marker>
             ))}
-            {createGoal && <SelectorMarker initialPosition={position} />}
+            {createGoal && (
+              <SelectorMarker initialPosition={[latitude, longitude]} />
+            )}
           </>
         </Map>
         <Box className="map-autonomous__options">
           <Button
-            className={createGoal ? "button--secondary" : "button--primary"}
+            className={createGoal ? 'button--secondary' : 'button--primary'}
             onClick={startCreateGoal}
           >
-            {createGoal ? "Cerrar creador" : "Crear destino"}
+            {createGoal ? 'Cerrar creador' : 'Crear destino'}
           </Button>
           <Button
-            className={"button--primary"}
+            className={'button--primary'}
             disabled={!createGoal}
             onClick={saveGoal}
           >
             Guardar destino
           </Button>
-          
+
           <Typography>
-            {createGoal ? "Arrastra el marcador rojo para ubicar el destino" : "Presione en 'crear destino' para definir waypoints"}
+            {createGoal
+              ? 'Arrastra el marcador rojo para ubicar el destino'
+              : "Presione en 'crear destino' para definir waypoints"}
           </Typography>
-          
         </Box>
       </Box>
     </ContainerElement>
-  )
-}
+  );
+};
 
 MapAutonomous.propTypes = {
   rosInstance: PropTypes.object,
   showPath: PropTypes.bool,
   widthMap: PropTypes.string,
   heightMap: PropTypes.string,
-}
-
+};

@@ -5,19 +5,17 @@ import App from './App.jsx'
 import store from '@reducer/store'
 import theme from './theme/theme.js'
 import './styles.sass'
-import {
-  BrowserRouter as Router
-} from "react-router-dom"
+import { RosProvider } from '@utils/RosProvider'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Provider store={store}>
+  //<React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <RosProvider>
           <App />
-        </Provider>
-      </Router>
-    </ThemeProvider>
-  // </React.StrictMode>,  
+      </RosProvider>
+    </Provider>
+  </ThemeProvider>
+  //</React.StrictMode>,  
 )
