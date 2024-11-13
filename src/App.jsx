@@ -8,6 +8,7 @@ import TableWaypointList from '@components/TableWaypointList';
 import { Box } from '@mui/material';
 import { rosSubscribers } from '@services/rosSubscribers';
 import { RosContext } from '@utils/RosProvider';
+import { SnackbarProvider } from 'notistack';
 import { useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -24,7 +25,7 @@ function App() {
   }, [isConnected]); // eslint-disable-line
 
   return (
-    <>
+    <SnackbarProvider maxSnack={3}>
       <Notification />
       <Box className="dashboard">
         <Box className="dashboard__row">
@@ -50,7 +51,7 @@ function App() {
           <RosConsoleLogs />
         </Box>
       </Box>
-    </>
+    </SnackbarProvider>
   );
 }
 

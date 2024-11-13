@@ -5,6 +5,7 @@ import { setConnection } from '@reducer/rosReducer';
 
 const useRos = () => {
   const [ros, setRos] = useState(null);
+  const [isConnected, setIsConnected] = useState(false)
   const url = useSelector((state) => state.ros.url);
   const dispatch = useDispatch();
   const [subscribers, setSubscribers] = useState({});
@@ -13,20 +14,22 @@ const useRos = () => {
     if (ros) return;
 
     const createRos = new ROSLIB.Ros({ url });
-
     createRos.on('connection', () => {
       console.log('Conectado con websocket server.');
       dispatch(setConnection(true));
+      setIsConnected(true)
     });
 
     createRos.on('error', (error) => {
       console.log('Error al conectar con websocket server: ', error);
       dispatch(setConnection(false));
+      setIsConnected(false)
     });
 
     createRos.on('close', () => {
       console.log('Conección con websocket server cerrada.');
       dispatch(setConnection(false));
+      setIsConnected(false)
       setRos(null);
     });
 
@@ -78,6 +81,7 @@ const useRos = () => {
   return {
     ros,
     subscribers,
+    isConnected,
     openConnection,
     closeConnection,
     subscribe,

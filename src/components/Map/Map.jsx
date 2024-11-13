@@ -17,9 +17,8 @@ const iconRobot = (rotationAngle) =>
     html: `<div style="transform: rotate(${rotationAngle + 90}deg)">
           <img src="icon-atv.png" style="width:66px; height:66px;" />
         </div>`,
-    // iconSize: [42, 42],
     iconAnchor: [10,66],
-    popupAnchor: [-20, 0],
+    popupAnchor: [0, -20],
     className: 'no-background-icon',
   });
 
@@ -56,6 +55,7 @@ export const Map = ({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         maxNativeZoom={19}
+        minZoom={18}
         maxZoom={21}
       />
       <Marker position={[latitude, longitude]} icon={iconRobot(degreeRobot)}>

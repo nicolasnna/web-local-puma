@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { URL_ROS_DEFAULT } from '@utils/constants';
+import data from '@/db.json'
 
 const initialState = {
   isConnected: false,
-  url: URL_ROS_DEFAULT,
+  url: data.url_ros,
   message: [],
   timeMessage: '',
   controlMode: 'none',

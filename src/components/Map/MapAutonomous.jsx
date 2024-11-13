@@ -84,7 +84,6 @@ export const MapAutonomous = ({ widthMap = '35vw', heightMap = '40vh' }) => {
     };
     console.log(newWaypoints);
     dispatch(setWaypointsKeyValue('web', 'waypoints', newWaypoints));
-    // Desactiva el modo arrastrable
     setDraggableMarkerIndex(null);
   };
 

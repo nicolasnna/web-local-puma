@@ -29,8 +29,7 @@ export const successNotification = (text) => {
       color: "success",
       on: true,
     }
-    dispatch(setNotification(option))
-    dispatch
+    setTimeout(() => dispatch(setNotification(option)), 50)
   }
 }
 
@@ -42,7 +41,7 @@ export const infoNotification = (text) => {
       color: "info",
       on: true,
     }
-    dispatch(setNotification(option))
+    setTimeout(() => dispatch(setNotification(option)), 50)
   }
 }
 
@@ -54,7 +53,7 @@ export const errorNotification = (text) => {
       color: "error",
       on: true,
     }
-    dispatch(setNotification(option))
+    setTimeout(() => dispatch(setNotification(option)), 50)
   }
 }
 

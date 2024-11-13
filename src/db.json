@@ -1,32 +1,80 @@
 {
+  "url_ros": "ws://localhost:9090",
+  "params": {
+    "limit_angle": 45,
+    "limit_accel": 30,
+    "initial_accel": 22
+  },
   "topics": {
-    "realsense": {
-      "name": "/puma/camera/color/image_raw/compressed",
-      "messageType": "sensor_msgs/CompressedImage"
+    "subscribers": {
+      "realsense": {
+        "name": "/puma/camera/color/image_raw/compressed",
+        "messageType": "sensor_msgs/CompressedImage"
+      },
+      "gps": {
+        "name": "/puma/sensors/gps/fix",
+        "messageType": "sensor_msgs/NavSatFix"
+      },
+      "roslog": {
+        "name": "/rosout",
+        "messageType": "rosgraph_msgs/Log"
+      },
+      "odometry": {
+        "name": "/puma/odometry/filtered",
+        "messageType": "nav_msgs/Odometry"
+      },
+      "current_control_mode": {
+        "name": "/puma/control/current_mode",
+        "messageType": "std_msgs/String"
+      },
+      "waypoints_current_mode": {
+        "name": "/puma/smach/container_status",
+        "messageType": "smach_msgs/SmachContainerStatus"
+      },
+      "waypoints_gps_info": {
+        "name": "/puma/waypoints/gps_nav_info",
+        "messageType": "puma_waypoints_msgs/GoalGpsNavInfo"
+      }
     },
-    "gps": {
-      "name": "/puma/sensors/gps/fix",
-      "messageType": "sensor_msgs/NavSatFix"
-    },
-    "roslog": {
-      "name": "/rosout",
-      "messageType": "rosgraph_msgs/Log"
-    },
-    "odometry": {
-      "name": "/puma/odometry/filtered",
-      "messageType": "nav_msgs/Odometry"
-    },
-    "current_control_mode": {
-      "name": "/puma/control/current_mode",
-      "messageType": "std_msgs/String"
-    },
-    "waypoints_current_mode": {
-      "name": "/puma/smach/container_status",
-      "messageType": "smach_msgs/SmachContainerStatus"
-    },
-    "waypoints_gps_info": {
-      "name": "/puma/waypoints/gps_nav_info",
-      "messageType": "puma_waypoints_msgs/GoalGpsNavInfo"
+    "publishers":{
+      "accelerator": {
+        "name": "/puma/accelerator/command",
+        "messageType": "std_msgs/Int16"
+      },
+      "direction": {
+        "name": "/puma/direction/command",
+        "messageType": "puma_direction_msgs/DirectionCmd"
+      },
+      "reverse": {
+        "name": "/puma/reverse/command",
+        "messageType": "std_msgs/Bool"
+      },
+      "brake": {
+        "name": "/puma/brake/command",
+        "messageType": "puma_brake_msgs/BrakeCmd"
+      },
+      "mode_selector": {
+        "name": "/puma/control/change_mode",
+        "messageType": "std_msgs/String"
+      },
+      "waypoints": {
+        "send_gps": {
+          "name": "/puma/waypoints/planned_goal_gps",
+          "messageType": "puma_waypoints_msgs/GoalGpsArray"
+        },
+        "plan_ready": {
+          "name": "/puma/waypoints/plan_ready",
+          "messageType": "std_msgs/Empty"
+        },
+        "plan_stop": {
+          "name": "/puma/waypoints/plan_stop",
+          "messageType": "std_msgs/Empty"
+        },
+        "plan_reset": {
+          "name": "/puma/waypoints/plan_reset",
+          "messageType": "std_msgs/Empty"
+        }
+      }
     }
   }
 }
