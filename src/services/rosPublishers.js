@@ -12,14 +12,15 @@ const basePublishers = (
   infoTopic,
   message,
   successText,
-  failedText = 'No se tiene conexión con el robot para enviar el comando.'
+  failedText = 'No se tiene conexión con el robot para enviar el comando.',
+  desactivateNotification = false
 ) => {
   if (ros.isConnected) {
     ros.sendMessage(infoTopic.name, infoTopic.messageType, message);
-    dispatch(infoNotification(successText));
+    if (!desactivateNotification) dispatch(infoNotification(successText));
     return true;
   }
-  dispatch(errorNotification(failedText));
+  if (!desactivateNotification) dispatch(errorNotification(failedText));
   return false;
 };
 
@@ -87,7 +88,9 @@ export const publishAcceleratorCmd = (ros, dispatch, value) => {
     dispatch,
     accelerator,
     { data: value },
-    `Se ha enviado el valor ${value} para el acelerador.`
+    `Se ha enviado el valor ${value} para el acelerador.`,
+    '',
+    true
   );
 };
 
@@ -100,7 +103,9 @@ export const publishBrakeCmd = (ros, dispatch, toActivate) => {
     { activate_brake: toActivate },
     `Se ha enviado el comando '${
       toActivate ? 'ACTIVAR' : 'DESACTIVAR'
-    }' para los frenos.`
+    }' para los frenos.`,
+    '',
+    true
   );
 };
 
@@ -111,8 +116,11 @@ export const publishDirectionCmd = (ros, dispatch, toActivate, angleDegres) => {
     dispatch,
     direction,
     { activate: toActivate, angle: (angleDegres * Math.PI) / 180 },
-    `Se ha enviado el comando para mover la dirección a un ángulo de ${-angleDegres}°.`
+    `Se ha enviado el comando para mover la dirección a un ángulo de ${-angleDegres}°.`,
+    '',
+    true
   );
+  
 };
 
 export const publishReverseCmd = (ros, dispatch, toActivate) => {
@@ -124,6 +132,7 @@ export const publishReverseCmd = (ros, dispatch, toActivate) => {
     { data: toActivate },
     `Se ha enviado el comando '${
       toActivate ? 'ACTIVAR' : 'DESACTIVAR'
-    }' para la reversa.`
+    }' para la reversa.`,
+    
   );
 };

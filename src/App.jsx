@@ -8,8 +8,8 @@ import TableWaypointList from '@components/TableWaypointList';
 import { Box } from '@mui/material';
 import { rosSubscribers } from '@services/rosSubscribers';
 import { RosContext } from '@utils/RosProvider';
-import { SnackbarProvider } from 'notistack';
 import { useContext, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useSelector } from 'react-redux';
 
 function App() {
@@ -25,8 +25,8 @@ function App() {
   }, [isConnected]); // eslint-disable-line
 
   return (
-    <SnackbarProvider maxSnack={3}>
-      <Notification />
+    <>
+      {createPortal(<Notification />, document.body)}
       <Box className="dashboard">
         <Box className="dashboard__row">
           <Box className="dashboard__side" height={'100%'}>
@@ -51,7 +51,7 @@ function App() {
           <RosConsoleLogs />
         </Box>
       </Box>
-    </SnackbarProvider>
+    </>
   );
 }
 

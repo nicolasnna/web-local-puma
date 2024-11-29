@@ -19,10 +19,12 @@ export const callbackGps = (message, dispatch) => {
 
 export const callbackLogs = (message, dispatch) => {
   const messageTime = getCurrentTime();
-  const messageLog = `${messageTime} [${message.level}] ${message.name}: ${message.msg}`;
+  const arrayLogs = message.logs
+  const allMessages = arrayLogs.map(l => `${l.date_text} [${l.level}] ${l.node}: ${l.content}`)
 
   dispatch(setRosValue('timeMessage', messageTime));
-  dispatch(pushRosValue('message', messageLog));
+  // dispatch(pushRosValue('message', messageLog));
+  dispatch(setRosValue('message', allMessages))
 };
 
 export const callbackModePuma = (message, dispatch) => {

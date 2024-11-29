@@ -8,11 +8,13 @@ import {
 import { RosContext } from '@utils/RosProvider';
 import { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const ControlAutonomous = () => {
   const ros = useContext(RosContext);
   const dispatch = useDispatch();
-  const stateWaypoint = useSelector((state) => state.waypoints.robot.state);
+  const { state, currentIndex } = useSelector((state) => state.waypoints.robot);
+  const { waypoints } = useSelector((state) => state.waypoints.web);
   const arrayGpsPosition = useSelector(
     (state) => state.waypoints.web.waypoints
   );
@@ -58,8 +60,21 @@ const ControlAutonomous = () => {
         <Typography>
           <b>Estado actual:</b>
         </Typography>
-        <Typography>{stateWaypoint}</Typography>
+        <Typography>{state}</Typography>
       </Box>
+      {state === 'PATH_FOLLOW' && <Box className="control-autonomous__state">
+        <Typography>
+          {currentIndex == 0 ? 'Inicial' : waypoints[currentIndex-1].label}
+        </Typography>
+        <div className="control-autonomous__group-icon">
+          <ArrowForwardIosIcon sx={{ height: '20px', alignSelf: 'center'}}/>
+          <ArrowForwardIosIcon sx={{ height: '20px', alignSelf: 'center'}}/>
+          <ArrowForwardIosIcon sx={{ height: '20px', alignSelf: 'center'}}/>
+        </div>
+        <Typography>
+          {currentIndex < waypoints.length-1 ? waypoints[currentIndex].label : 'Destino Final'}
+        </Typography>
+      </Box>}
       <Box className="control-autonomous__buttons-group">
         {buttonsList.map((b, index) => (
           <Button

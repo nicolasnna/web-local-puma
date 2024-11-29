@@ -23,8 +23,8 @@ export const rosSubscribers = (ros) => {
     callbackGps
   );
   ros.subscribe(
-    topics.roslog.name,
-    topics.roslog.messageType,
+    topics.pumalogs.name,
+    topics.pumalogs.messageType,
     callbackLogs
   );
   ros.subscribe(

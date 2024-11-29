@@ -6,15 +6,18 @@ import store from '@reducer/store'
 import theme from './theme/theme.js'
 import './styles.sass'
 import { RosProvider } from '@utils/RosProvider'
+import { SnackbarProvider } from 'notistack';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   //<React.StrictMode>
   <ThemeProvider theme={theme}>
     <Provider store={store}>
-      <RosProvider>
+      <SnackbarProvider maxSnack={3}>
+        <RosProvider>
           <App />
-      </RosProvider>
+        </RosProvider>
+      </SnackbarProvider>
     </Provider>
   </ThemeProvider>
   //</React.StrictMode>,  

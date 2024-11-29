@@ -1,35 +1,32 @@
 @import 'styles/index'
-  
+
 html, body 
   margin: 0
   padding: 0
-  height: 100%
   font-family: Roboto, sans-serif
   color: $text-primary
-  background-image: linear-gradient(to right bottom, #c0c7e3, #abb9e2, #94abe1, #799edf, #5792de)
+  // background-image: linear-gradient(to right bottom, #c0c7e3, #abb9e2, #94abe1, #799edf, #5792de)
+  background-image: url('/src/assets/bg.png')
   background-size: cover
   background-attachment: fixed
-
-#root 
-  flex: 1
-  display: flex
-  flex-direction: column
+  width: 100%
 
 .dashboard
   display: flex
   flex-direction: column
   align-items: center
   justify-content: center
-  gap: 10px
+  gap: 2rem
   padding: 20px
-  width: max-content
-  min-width: 100vw
+  margin: 0 auto
   
   &__row
     display: flex
     align-items: center
+    justify-content: center
     width: 100%
     gap: 3rem
+    flex-wrap: wrap
 
   &__side
     display: flex
