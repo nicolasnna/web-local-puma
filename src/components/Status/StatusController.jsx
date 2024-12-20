@@ -18,6 +18,13 @@ import { RosContext } from '@utils/RosProvider';
 import { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+const labelModes = {
+  "idle": "Standby",
+  "web": "Web",
+  "navegacion": "Navegación",
+  "joystick": "Joystick"
+}
+
 const StatusController = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const modeController = useSelector((state) => state.ros.controlMode);
@@ -38,27 +45,27 @@ const StatusController = () => {
   return (
     <Box className="status-controller">
       <Typography className="status-controller__text">
-        {modeController}
+        {labelModes[modeController]}
       </Typography>
       <IconButton onClick={() => setOpenDialog(true)}>
         <SettingsIcon className="status-controller__icon" />
       </IconButton>
       <Dialog open={openDialog} className="status-controller__dialog">
         <DialogTitle className="status-controller__dialog--title">
-          Selector de modo PUMA
+          Configuración de control PUMA
         </DialogTitle>
         <DialogContent className="status-controller__dialog--content">
           <Typography>
-            <b>manual</b>: uso de botones para controlar la dirección y
-            velocidad del robot.
+            <b>Standby</b>: Robot en reposo con controlador desactivado y frenos activos. 
           </Typography>
           <Typography>
-            <b>autonomo</b>: permite manejo de waypoints para definir la
-            navegación, asi como habilita botones especiales para ello.
+            <b>Web</b>: Control del robot a traves de la web (teleoperado). 
           </Typography>
           <Typography>
-            <b>joystick</b>: permite el control del robot por medio de su
-            joystick de xbox.
+            <b>Navegación</b>: Control de movimiento del robot con algoritmos internos del robot para la navegación por waypoints.
+          </Typography>
+          <Typography>
+            <b>Joystick</b>: Control del robot usando control de xbox 360 configurado (requiere estar cerca del robot).
           </Typography>
           <Box component="form" className="status-controller__form">
             <FormControl>
@@ -73,10 +80,10 @@ const StatusController = () => {
                   id: 'new-mode',
                 }}
               >
-                <MenuItem value="none">ninguno</MenuItem>
-                <MenuItem value="manual">manual</MenuItem>
-                <MenuItem value="autonomous">autonomo</MenuItem>
-                <MenuItem value="joystick">joystick</MenuItem>
+                <MenuItem value="idle">{labelModes["idle"]}</MenuItem>
+                <MenuItem value="web">{labelModes["web"]}</MenuItem>
+                <MenuItem value="navegacion">{labelModes["navegacion"]}</MenuItem>
+                <MenuItem value="joystick">{labelModes["joystick"]}</MenuItem>
               </Select>
             </FormControl>
           </Box>

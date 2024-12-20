@@ -81,58 +81,20 @@ export const publishResetPlan = (ros, dispatch) => {
   );
 };
 
-export const publishAcceleratorCmd = (ros, dispatch, value) => {
-  const { accelerator } = publisherInfo;
+export const publishTeleop = (ros, dispatch, accel, direction_angle, brake, reverse) => {
+  const { web_teleop } = publisherInfo
   return basePublishers(
     ros,
     dispatch,
-    accelerator,
-    { data: value },
-    `Se ha enviado el valor ${value} para el acelerador.`,
-    '',
+    web_teleop,
+    {
+      accel_value: accel,
+      angle_degree: direction_angle,
+      brake: brake,
+      reverse: reverse
+    },
+    'Se ha enviado el comando',
+    'No se ha podido enviar el comando',
     true
-  );
-};
-
-export const publishBrakeCmd = (ros, dispatch, toActivate) => {
-  const { brake } = publisherInfo;
-  return basePublishers(
-    ros,
-    dispatch,
-    brake,
-    { activate_brake: toActivate },
-    `Se ha enviado el comando '${
-      toActivate ? 'ACTIVAR' : 'DESACTIVAR'
-    }' para los frenos.`,
-    '',
-    true
-  );
-};
-
-export const publishDirectionCmd = (ros, dispatch, toActivate, angleDegres) => {
-  const { direction } = publisherInfo;
-  return basePublishers(
-    ros,
-    dispatch,
-    direction,
-    { activate: toActivate, angle: (angleDegres * Math.PI) / 180 },
-    `Se ha enviado el comando para mover la dirección a un ángulo de ${-angleDegres}°.`,
-    '',
-    true
-  );
-  
-};
-
-export const publishReverseCmd = (ros, dispatch, toActivate) => {
-  const { reverse } = publisherInfo;
-  return basePublishers(
-    ros,
-    dispatch,
-    reverse,
-    { data: toActivate },
-    `Se ha enviado el comando '${
-      toActivate ? 'ACTIVAR' : 'DESACTIVAR'
-    }' para la reversa.`,
-    
-  );
-};
+  )
+}

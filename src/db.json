@@ -21,7 +21,7 @@
       },
       "pumalogs": {
         "name": "/puma/logs/logs",
-        "messageType": "puma_logs_msgs/LogArray"
+        "messageType": "puma_msgs/LogArray"
       },
       "odometry": {
         "name": "/puma/web/odometry",
@@ -37,25 +37,13 @@
       },
       "waypoints_gps_info": {
         "name": "/puma/web/gps_nav_info",
-        "messageType": "puma_waypoints_msgs/GoalGpsNavInfo"
+        "messageType": "puma_msgs/GoalGpsNavInfo"
       }
     },
     "publishers":{
-      "accelerator": {
-        "name": "/puma/accelerator/command",
-        "messageType": "std_msgs/Int16"
-      },
-      "direction": {
-        "name": "/puma/direction/command",
-        "messageType": "puma_direction_msgs/DirectionCmd"
-      },
-      "reverse": {
-        "name": "/puma/reverse/command",
-        "messageType": "std_msgs/Bool"
-      },
-      "brake": {
-        "name": "/puma/brake/command",
-        "messageType": "puma_brake_msgs/BrakeCmd"
+      "web_teleop": {
+        "name": "/puma/web/teleop",
+        "messageType": "puma_msgs/WebTeleop"
       },
       "mode_selector": {
         "name": "/puma/control/change_mode",
@@ -64,7 +52,7 @@
       "waypoints": {
         "send_gps": {
           "name": "/puma/waypoints/planned_goal_gps",
-          "messageType": "puma_waypoints_msgs/GoalGpsArray"
+          "messageType": "puma_msgs/GoalGpsArray"
         },
         "plan_ready": {
           "name": "/puma/waypoints/plan_ready",

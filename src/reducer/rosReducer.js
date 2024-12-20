@@ -6,7 +6,7 @@ const initialState = {
   url: data.url_ros,
   message: [],
   timeMessage: '',
-  controlMode: 'none',
+  controlMode: 'idle',
 };
 
 const rosSlice = createSlice({
