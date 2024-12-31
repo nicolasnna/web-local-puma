@@ -1,12 +1,16 @@
 {
   "url_ros": "ws://localhost:9090",
   "params": {
-    "limit_angle": 45,
+    "limit_angle": 40,
     "limit_accel": 30,
-    "initial_accel": 22
+    "initial_accel": 18
   },
   "topics": {
     "subscribers": {
+      "arduinomega": {
+        "name": "/puma/web/arduino_status",
+        "messageType": "puma_msgs/StatusArduino"
+      },
       "realsense": {
         "name": "/puma/web/camera_realsense",
         "messageType": "sensor_msgs/CompressedImage"

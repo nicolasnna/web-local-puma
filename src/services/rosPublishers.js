@@ -11,9 +11,9 @@ const basePublishers = (
   dispatch,
   infoTopic,
   message,
+  desactivateNotification = true,
   successText,
   failedText = 'No se tiene conexión con el robot para enviar el comando.',
-  desactivateNotification = false
 ) => {
   if (ros.isConnected) {
     ros.sendMessage(infoTopic.name, infoTopic.messageType, message);
@@ -31,6 +31,7 @@ export const publishModeControler = (ros, dispatch, mode) => {
     dispatch,
     mode_selector,
     { data: mode },
+    false,
     `Se ha enviado el cambio de modo ${mode} al robot.`,
     'No se tiene conexión con el robot para realizar el cambio.'
   );
@@ -43,6 +44,7 @@ export const publishGpsGoals = (ros, dispatch, gpsArray) => {
     dispatch,
     send_gps,
     { data: gpsArray },
+    false,
     'Se ha enviado los waypoints gps al robot.',
     'No se tiene conexión con el robot para enviar la ruta.'
   );
@@ -55,6 +57,7 @@ export const publishReadyPlan = (ros, dispatch) => {
     dispatch,
     plan_ready,
     {},
+    false,
     'Se ha enviado el comando para empezar el plan.'
   );
 };
@@ -66,6 +69,7 @@ export const publishStopPlan = (ros, dispatch) => {
     dispatch,
     plan_stop,
     {},
+    false,
     'Se ha enviado el comando para detenerse.'
   );
 };
@@ -77,11 +81,12 @@ export const publishResetPlan = (ros, dispatch) => {
     dispatch,
     plan_reset,
     {},
+    false,
     'Se ha enviado el comando para limpiar los waypoints del robot.'
   );
 };
 
-export const publishTeleop = (ros, dispatch, accel, direction_angle, brake, reverse) => {
+export const publishTeleop = (ros, dispatch, accel, direction_angle, brake, reverse, parking) => {
   const { web_teleop } = publisherInfo
   return basePublishers(
     ros,
@@ -91,10 +96,9 @@ export const publishTeleop = (ros, dispatch, accel, direction_angle, brake, reve
       accel_value: accel,
       angle_degree: direction_angle,
       brake: brake,
-      reverse: reverse
+      reverse: reverse,
+      parking: parking
     },
-    'Se ha enviado el comando',
-    'No se ha podido enviar el comando',
     true
   )
 }

@@ -1,4 +1,4 @@
-import { pushRosValue, setRosValue } from '@reducer/rosReducer';
+import { setRosValue } from '@reducer/rosReducer';
 import { pushTopicKeyValue, setTopicValues } from '@reducer/subscribersReducer';
 import { setWaypointsKeyValue } from '@reducer/waypointsReducer';
 import { getCurrentTime, getYawDegreeFomQuaternions } from '@utils/utils';
@@ -38,6 +38,10 @@ export const callbackOdometry = (message, dispatch) => {
   const time = getCurrentTime();
   dispatch(setTopicValues('odometry', { velX, yaw, time }));
 };
+
+export const callbackArduinoMega = (message, dispatch) => {
+  dispatch(setTopicValues('arduino', { secureStop: message.control.security_signal }));
+}
 
 export const callbackStateWaypoints = (message, dispatch) => {
   const { active_states } = message;

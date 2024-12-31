@@ -19,6 +19,9 @@ const subscribersSlice = createSlice({
       yaw: 0,
       time: '',
     },
+    arduino: {
+      secureStop: false,
+    }
   },
   reducers: {
     setSubscribeTopicValues(state, action) {

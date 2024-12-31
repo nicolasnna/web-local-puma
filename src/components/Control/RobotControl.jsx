@@ -32,7 +32,7 @@ const RobotControl = () => {
           </Typography>
           <StatusController/>
         </Box>
-        <ControlAutonomous/>
+        {modeController === "navegacion" && <ControlAutonomous/>}
         {modeController === "web" && <ControlManual/>}
       </Box>
     </ContainerElement>

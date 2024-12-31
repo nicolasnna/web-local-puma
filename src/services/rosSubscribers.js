@@ -1,4 +1,5 @@
 import {
+  callbackArduinoMega,
   callbackCamera,
   callbackGps,
   callbackGpsNavInfo,
@@ -9,7 +10,7 @@ import {
 } from '@services/rosCallbacks';
 import data from '@/db.json';
 
-const topics = data.topics.subscribers
+const topics = data.topics.subscribers;
 
 export const rosSubscribers = (ros) => {
   ros.subscribe(
@@ -17,11 +18,7 @@ export const rosSubscribers = (ros) => {
     topics.realsense.messageType,
     callbackCamera
   );
-  ros.subscribe(
-    topics.gps.name,
-    topics.gps.messageType,
-    callbackGps
-  );
+  ros.subscribe(topics.gps.name, topics.gps.messageType, callbackGps);
   ros.subscribe(
     topics.pumalogs.name,
     topics.pumalogs.messageType,
@@ -47,4 +44,9 @@ export const rosSubscribers = (ros) => {
     topics.waypoints_gps_info.messageType,
     callbackGpsNavInfo
   );
-}
+  ros.subscribe(
+    topics.arduinomega.name,
+    topics.arduinomega.messageType,
+    callbackArduinoMega
+  );
+};
